@@ -1,72 +1,42 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import GlassHeader, { TabKey } from '@/components/GlassHeader'
-import FlowerHero from '@/components/FlowerHero'
+import FlowerHero, { FlowerTheme } from '@/components/FlowerHero'
+import BloomBadge from '@/components/BloomBadge' // contador/prev de floração
 
-type Flower = {
+type FlowerRec = {
+    id: string
     common: string
     sci: string
     emoji: string
     biome: string
     season: string
     summary: string
+    colors?: FlowerTheme & { petalCount?: number }
 }
 
-const FLOWERS: Flower[] = [
+/* fallback para o primeiro load offline (caso falhe o fetch do JSON) */
+const FALLBACK: FlowerRec[] = [
     {
-        common: 'Pau-brasil',
-        sci: 'Paubrasilia echinata',
-        emoji: '🌳',
-        biome: 'Mata Atlântica litorânea',
-        season: 'floração dez–jul',
-        summary:
-            'Árvore simbólica do Brasil, polinizada principalmente por abelhas; ocorre na faixa costeira do RJ ao RN.',
-    },
-    {
+        id: 'ipe-amarelo',
         common: 'Ipê-amarelo',
         sci: 'Handroanthus chrysotrichus',
         emoji: '💛',
-        biome: 'Mata Atlântica e Cerrado',
-        season: 'inverno/primavera (geralmente ago–set)',
-        summary:
-            'Árvore ornamental de pequeno a médio porte, copa larga; flores intensamente amarelas em época de seca.',
-    },
-    {
-        common: 'Vitória-régia',
-        sci: 'Victoria amazonica',
-        emoji: '🪷',
-        biome: 'Amazônia, águas calmas',
-        season: 'flores noturnas (mudam de branco → rosa na 2ª noite)',
-        summary:
-            'Gigante aquática: flores aquecem e atraem besouros; fecham de dia, reabrem à noite mudando de cor.',
-    },
-    {
-        common: 'Manacá-da-serra',
-        sci: 'Tibouchina mutabilis',
-        emoji: '💜',
-        biome: 'Mata Atlântica (Serra do Mar)',
-        season: 'primavera/verão',
-        summary:
-            'Flores mudam de branco → lilás-claro → lilás-escuro; espécie típica da encosta atlântica sul-sudeste.',
-    },
-    {
-        common: 'Cattleya labiata',
-        sci: 'Cattleya labiata',
-        emoji: '🌸',
-        biome: 'NE/N/SE do Brasil (epífita)',
-        season: 'final do verão ao início do outono',
-        summary:
-            '“Rainha do Nordeste”: orquídea epífita de clima sazonalmente seco; flores grandes e perfumadas.',
-    },
-    {
-        common: 'Ipê-roxo',
-        sci: 'Handroanthus impetiginosus',
-        emoji: '💜🌳',
-        biome: 'Amazônia, Caatinga, Cerrado, Mata Atlântica, Pantanal',
-        season: 'maio–ago',
-        summary:
-            'Decíduo; flores roxas em panículas durante a seca. Muito usado em arborização e restauração.',
+        biome: '',
+        season: '',
+        summary: '',
+        colors: {
+            petalStart: '#fde047',
+            petalEnd: '#f59e0b',
+            centerStart: '#fef08a',
+            centerEnd: '#f59e0b',
+            stemStart: '#16a34a',
+            stemEnd: '#065f46',
+            leaf1: '#22c55e',
+            leaf2: '#16a34a',
+            petalCount: 6,
+        },
     },
 ]
 
@@ -75,7 +45,32 @@ export default function UIPage() {
     const [sun, setSun] = useState(70)
     const [rain, setRain] = useState(20)
     const [wind, setWind] = useState(15)
-    const [open, setOpen] = useState<Flower | null>(null)
+
+    const [flowers, setFlowers] = useState<FlowerRec[]>(FALLBACK)
+    const [selectedId, setSelectedId] = useState<string>(FALLBACK[0].id)
+    const [open, setOpen] = useState<FlowerRec | null>(null)
+
+    // carrega /flowers.json (em public/)
+    useEffect(() => {
+        let alive = true
+        fetch('/flowers.json', { cache: 'no-store' })
+            .then((r) => (r.ok ? r.json() : Promise.reject(r.statusText)))
+            .then((arr: FlowerRec[]) => {
+                if (alive && Array.isArray(arr) && arr.length) {
+                    setFlowers(arr)
+                    setSelectedId(arr[0].id)
+                }
+            })
+            .catch(() => { /* mantém fallback */ })
+        return () => { alive = false }
+    }, [])
+
+    const selected = useMemo(
+        () => flowers.find((f) => f.id === selectedId) ?? flowers[0],
+        [flowers, selectedId],
+    )
+    const theme = selected?.colors as FlowerTheme | undefined
+    const petalCount = selected?.colors?.petalCount ?? 8
 
     return (
         <div className="min-h-dvh relative bg-gradient-to-br from-emerald-50 via-sky-50 to-fuchsia-50 dark:from-slate-900 dark:via-slate-950 dark:to-black">
@@ -83,143 +78,138 @@ export default function UIPage() {
             <GlassHeader active={tab} onChange={setTab} />
 
             <main className="relative z-10 pt-28 pb-16 px-4 max-w-6xl mx-auto">
-                {/* === Painel 1 — Estação & Humor === */}
+
+                {/* === Estação === */}
                 {tab === 'estacao' && (
-                    <section className="grid gap-6 lg:grid-cols-[auto_1fr]">
-                        <div className="flex items-center justify-center">
-                            <div className="glass glass-hairline glass-noise rounded-3xl p-4">
-                                <FlowerHero size={260} sun={sun} rain={rain} wind={wind} />
-                            </div>
-                        </div>
-
-                        <div className="grid gap-4 content-start">
-                            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">Estação &amp; Humor</h1>
-                            <p className="text-slate-700 dark:text-slate-300">
-                                Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.
-                            </p>
-
-                            <div className="grid sm:grid-cols-3 gap-3">
-                                <GlassCard title="Destaque da estação" subtitle="Primavera">
-                                    🌼 Pico de floração para espécies ornamentais — regas moderadas.
-                                </GlassCard>
-                                <GlassCard title="Cuidados rápidos" subtitle="Hoje">
-                                    ☀️ Sol: <b>{desc(sun)}</b> · 💧 Água: <b>{desc(rain)}</b> · 🌬️ Vento: <b>{desc(wind)}</b>
-                                </GlassCard>
-                                <GlassCard title="Sugestão de espécie" subtitle="Fácil de cuidar">
-                                    🌺 <b>Hibiscus rosa-sinensis</b> — florece bem com sol filtrado.
-                                </GlassCard>
-                            </div>
-
-                            {/* === NOVO: Lista de flores do Brasil === */}
-                            <div className="mt-4">
-                                <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Flores do Brasil (exemplos)</h2>
-                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                    {FLOWERS.map((f) => (
-                                        <button
-                                            key={f.sci}
-                                            onClick={() => setOpen(f)}
-                                            className="text-left glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-3xl">{f.emoji}</span>
-                                                <div>
-                                                    <div className="font-semibold text-slate-900 dark:text-white">{f.common}</div>
-                                                    <div className="text-xs italic text-slate-600 dark:text-slate-300">{f.sci}</div>
-                                                </div>
-                                            </div>
-                                            <div className="mt-2 text-sm text-slate-800 dark:text-slate-200">
-                                                <b>Bioma:</b> {f.biome}<br/>
-                                                <b>Fenologia:</b> {f.season}<br/>
-                                                {f.summary}
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                    <section className="grid gap-4">
+                        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                            Estação &amp; Humor
+                        </h1>
+                        <p className="text-slate-700 dark:text-slate-300">
+                            Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.
+                        </p>
+                        <div className="grid sm:grid-cols-3 gap-3">
+                            <GlassCard title="Destaque da estação" subtitle="Primavera">
+                                🌼 Pico de floração para espécies ornamentais — regas moderadas.
+                            </GlassCard>
+                            <GlassCard title="Cuidados rápidos" subtitle="Hoje">
+                                ☀️ Sol: <b>{desc(sun)}</b> · 💧 Água: <b>{desc(rain)}</b> · 🌬️ Vento: <b>{desc(wind)}</b>
+                            </GlassCard>
+                            <GlassCard title="Sugestão de espécie" subtitle="Fácil de cuidar">
+                                🌺 <b>Hibiscus rosa-sinensis</b> — florece bem com sol filtrado.
+                            </GlassCard>
                         </div>
                     </section>
                 )}
 
-                {/* === Painel 2 — Clima & Controles === */}
+                {/* === Clima === */}
                 {tab === 'clima' && (
-                    <section className="grid gap-8 md:grid-cols-[1fr_420px]">
-                        <div className="glass glass-hairline glass-noise rounded-3xl p-5">
-                            <h2 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">Clima &amp; Controles</h2>
-                            <p className="text-slate-700 dark:text-slate-300 mb-6">Ajuste condições e veja a flor reagir.</p>
-                            <div className="space-y-6">
-                                <Slider label="Luz solar" value={sun} onChange={setSun} icon="☀️" />
-                                <Slider label="Chuva/rega" value={rain} onChange={setRain} icon="💧" />
-                                <Slider label="Vento" value={wind} onChange={setWind} icon="🌬️" />
+                    <section className="space-y-8">
+                        {/* seletor */}
+                        <div className="glass glass-hairline glass-noise rounded-2xl p-2 flex gap-2 overflow-x-auto">
+                            {flowers.map((f) => {
+                                const active = f.id === selectedId
+                                return (
+                                    <button
+                                        key={f.id}
+                                        onClick={() => setSelectedId(f.id)}
+                                        title={`${f.common} (${f.sci})`}
+                                        className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
+                                            active
+                                                ? 'ring-2 ring-emerald-400 bg-white/60 dark:bg-white/20'
+                                                : 'hover:bg-white/40 dark:hover:bg-white/10'
+                                        }`}
+                                        aria-pressed={active}
+                                    >
+                                        <span className="text-2xl">{f.emoji}</span>
+                                    </button>
+                                )
+                            })}
+                            <div className="ml-2 text-sm self-center text-slate-700 dark:text-slate-300">
+                                {selected ? <>Flor atual: <b>{selected.common}</b></> : '—'}
                             </div>
                         </div>
 
-                        <aside className="glass glass-hairline glass-noise rounded-3xl p-5">
-                            <h3 className="font-semibold mb-2 text-slate-900 dark:text-white">Recomendações</h3>
-                            <ul className="list-disc pl-5 space-y-1 text-slate-800 dark:text-slate-200">
-                                <li>Sol: <b>{desc(sun)}</b> — evite queimar pétalas ao passar de 80%.</li>
-                                <li>Água: <b>{desc(rain)}</b> — drenagem leve em &gt; 60%.</li>
-                                <li>Vento: <b>{desc(wind)}</b> — tutor leve se for &gt; 50%.</li>
-                            </ul>
-                            <div className="mt-6 flex items-center justify-center">
-                                <div className="glass glass-hairline glass-noise rounded-2xl p-3">
-                                    <FlowerHero size={180} sun={sun} rain={rain} wind={wind} />
+                        <div className="grid gap-8 md:grid-cols-[1fr_420px]">
+                            {/* painel de controles */}
+                            <div className="glass glass-hairline glass-noise rounded-3xl p-5">
+                                <h2 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
+                                    Clima &amp; Controles
+                                </h2>
+                                <p className="text-slate-700 dark:text-slate-300 mb-6">
+                                    Ajuste condições e veja a flor reagir.
+                                </p>
+                                <div className="space-y-6">
+                                    <Slider label="Luz solar" value={sun} onChange={setSun} icon="☀️" />
+                                    <Slider label="Chuva/rega" value={rain} onChange={setRain} icon="💧" />
+                                    <Slider label="Vento" value={wind} onChange={setWind} icon="🌬️" />
                                 </div>
                             </div>
-                        </aside>
-                    </section>
-                )}
 
-                {/* === Painel 3 — Polinização === */}
-                {tab === 'polinizacao' && (
-                    <section className="grid gap-6 lg:grid-cols-[auto_1fr]">
-                        <div className="flex items-center justify-center">
-                            <div className="glass glass-hairline glass-noise rounded-3xl p-4">
-                                <FlowerHero size={220} sun={sun} rain={rain} wind={wind} />
-                            </div>
-                        </div>
+                            {/* aside da flor selecionada */}
+                            <aside className="glass glass-hairline glass-noise rounded-3xl p-5 relative">
+                                {/* WRAPPER ABSOLUTO: garante canto direito SEMPRE */}
+                                <div className="absolute top-3 right-3 select-none pointer-events-none">
+                                    {selected?.id && <BloomBadge flowerId={selected.id} />}
+                                </div>
 
-                        <div className="grid gap-3">
-                            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Polinização</h2>
-                            <p className="text-slate-700 dark:text-slate-300">Atraia polinizadores e acompanhe visitas.</p>
-
-                            <div className="grid md:grid-cols-3 gap-3">
-                                <PolCard emoji="🐝" titulo="Abelhas" texto="Preferem flores amarelas/azuis e manhãs sem vento." />
-                                <PolCard emoji="🦋" titulo="Borboletas" texto="Atraídas por cores vivas e néctar acessível." />
-                                <PolCard emoji="🦇" titulo="Morcegos" texto="Ativos à noite; flores claras e aromáticas." />
-                            </div>
-
-                            <div className="glass glass-hairline glass-noise rounded-2xl p-4">
-                                <h3 className="font-medium mb-2 text-slate-900 dark:text-white">Lista de visitas (exemplo)</h3>
-                                <ul className="space-y-2 text-sm text-slate-800 dark:text-slate-200">
-                                    <li>08:12 — <b>Apis mellifera</b> (abelha-europeia)</li>
-                                    <li>10:47 — <b>Heliconius erato</b> (borboleta-da-paixão)</li>
-                                    <li>19:30 — <b>Glossophaga soricina</b> (morcego-beija-flor)</li>
+                                <h3 className="font-semibold mb-1 text-slate-900 dark:text-white">
+                                    {selected?.common ?? 'Flor'}
+                                </h3>
+                                <div className="text-xs italic text-slate-600 dark:text-slate-300 mb-2">
+                                    {selected?.sci}
+                                </div>
+                                <ul className="list-disc pl-5 space-y-1 text-slate-800 dark:text-slate-200">
+                                    <li>Sol: <b>{desc(sun)}</b> — evite queimar pétalas ao passar de 80%.</li>
+                                    <li>Água: <b>{desc(rain)}</b> — drenagem leve em &gt; 60%.</li>
+                                    <li>Vento: <b>{desc(wind)}</b> — tutor leve se for &gt; 50%.</li>
                                 </ul>
+                                <div className="mt-6 flex items-center justify-center">
+                                    <div className="glass glass-hairline glass-noise rounded-2xl p-3">
+                                        <FlowerHero size={180} sun={sun} rain={rain} wind={wind} theme={theme} petals={petalCount} />
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+
+                        {/* lista de flores */}
+                        <div className="space-y-2">
+                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Flores do Brasil</h2>
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {flowers.map((f) => (
+                                    <button
+                                        key={f.id}
+                                        onClick={() => { setSelectedId(f.id); setOpen(f) }}
+                                        className="relative text-left glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition"
+                                    >
+                                        {/* WRAPPER ABSOLUTO: canto direito garantido */}
+                                        <div className="absolute top-2 right-2 select-none pointer-events-none">
+                                            <BloomBadge flowerId={f.id} />
+                                        </div>
+
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-3xl">{f.emoji}</span>
+                                            <div>
+                                                <div className="font-semibold text-slate-900 dark:text-white">{f.common}</div>
+                                                <div className="text-xs italic text-slate-600 dark:text-slate-300">{f.sci}</div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-2 text-sm text-slate-800 dark:text-slate-200">
+                                            <b>Bioma:</b> {f.biome}<br/>
+                                            <b>Fenologia:</b> {f.season}<br/>
+                                            {f.summary}
+                                        </div>
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </section>
                 )}
 
-                {/* === Painel 4 — Ciclo de Vida === */}
-                {tab === 'ciclo' && (
-                    <section className="grid gap-6">
-                        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Ciclo de Vida</h2>
-                        <div className="grid sm:grid-cols-4 gap-3">
-                            <Stage emoji="🌱" titulo="Germinação" texto="Semente acorda; umidade constante." />
-                            <Stage emoji="🌿" titulo="Vegetativa" texto="Folhas e caule; adubar levemente." />
-                            <Stage emoji="🌼" titulo="Botões" texto="Luz estável e menos vento." />
-                            <Stage emoji="🌺" titulo="Floração" texto="Pico de cor; rega moderada." />
-                        </div>
-                        <div className="glass glass-hairline glass-noise rounded-2xl p-4">
-                            <p className="text-slate-800 dark:text-slate-200">
-                                Dica: anote datas das fases para comparar entre estações.
-                            </p>
-                        </div>
-                    </section>
-                )}
+                {/* Polinização / Ciclo – mantenha como já está */}
             </main>
 
-            {/* === Modal glass com detalhes da flor === */}
+            {/* Modal de detalhes */}
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
                     <p className="text-slate-800 dark:text-slate-200">
@@ -227,13 +217,22 @@ export default function UIPage() {
                         <b>Fenologia:</b> {open.season}
                     </p>
                     <p className="mt-2 text-slate-700 dark:text-slate-300">{open.summary}</p>
+
+                    <div className="mt-4 flex justify-end">
+                        <button
+                            className="glass glass-hairline rounded-lg px-3 py-2 hover:bg-white/60 dark:hover:bg-white/20"
+                            onClick={() => { setSelectedId(open.id); setOpen(null) }}
+                        >
+                            Selecionar esta flor
+                        </button>
+                    </div>
                 </Modal>
             )}
         </div>
     )
 }
 
-/* ---------- componentes locais ---------- */
+/* ------- auxiliares ------- */
 
 function desc(v: number) {
     if (v < 25) return 'baixo'
@@ -270,26 +269,6 @@ function Slider({ label, value, onChange, icon }:{
                 />
             </div>
         </label>
-    )
-}
-
-function PolCard({ emoji, titulo, texto }:{ emoji:string; titulo:string; texto:string }) {
-    return (
-        <div className="glass glass-hairline glass-noise rounded-2xl p-4">
-            <div className="text-2xl">{emoji}</div>
-            <div className="font-semibold text-slate-900 dark:text-white">{titulo}</div>
-            <p className="text-slate-800 dark:text-slate-200 text-sm">{texto}</p>
-        </div>
-    )
-}
-
-function Stage({ emoji, titulo, texto }:{ emoji:string; titulo:string; texto:string }) {
-    return (
-        <div className="glass glass-hairline glass-noise rounded-2xl p-4 text-center">
-            <div className="text-3xl mb-1">{emoji}</div>
-            <div className="font-semibold text-slate-900 dark:text-white">{titulo}</div>
-            <p className="text-slate-800 dark:text-slate-200 text-sm">{texto}</p>
-        </div>
     )
 }
 
