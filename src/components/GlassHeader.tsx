@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { JSX, useEffect, useId, useRef, useState } from 'react'
 
 export type TabKey = 'estacao' | 'clima' | 'polinizacao' | 'ciclo'
 
