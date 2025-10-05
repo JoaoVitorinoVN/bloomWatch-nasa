@@ -3,8 +3,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import GlassHeader, { TabKey } from '@/components/GlassHeader'
 import FlowerHero, { FlowerTheme } from '@/components/FlowerHero'
-import BloomBadge from '@/components/BloomBadge' // contador/prev de floração
+import BloomBadge from '@/components/BloomBadge'
 import Footer from '@/components/Footer'
+
+// Mantidos da sua versão com Polinização
+import GrowthChart from '@/components/GrowthChart'
+import { inferPollination } from '@/lib/pollination'
 
 type FlowerRec = {
     id: string
@@ -17,7 +21,23 @@ type FlowerRec = {
     colors?: FlowerTheme & { petalCount?: number }
 }
 
-/* fallback para o primeiro load offline (caso falhe o fetch do JSON) */
+/* ======= Ciclo: tipos/LS helpers ======= */
+type NoteRec = {
+    id: string
+    title: string
+    body: string
+    flowerId: string
+    flowerName: string
+    daysAtCreation: number | null
+    createdAt: string
+}
+const LS_KEY = 'bw_notes_v1'
+const loadNotes = (): NoteRec[] => {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]') } catch { return [] }
+}
+const saveNotes = (list: NoteRec[]) => localStorage.setItem(LS_KEY, JSON.stringify(list))
+
+/* fallback */
 const FALLBACK: FlowerRec[] = [
     {
         id: 'ipe-amarelo',
@@ -51,7 +71,7 @@ export default function UIPage() {
     const [selectedId, setSelectedId] = useState<string>(FALLBACK[0].id)
     const [open, setOpen] = useState<FlowerRec | null>(null)
 
-    // carrega /flowers.json (em public/)
+    // carrega /flowers.json (public)
     useEffect(() => {
         let alive = true
         fetch('/flowers.json', { cache: 'no-store' })
@@ -73,24 +93,59 @@ export default function UIPage() {
     const theme = selected?.colors as FlowerTheme | undefined
     const petalCount = selected?.colors?.petalCount ?? 8
 
+    // ===== Polinização (mantido) =====
+    const poly = inferPollination(selected?.biome)
+    const [daysUntil, setDaysUntil] = useState<number | null>(null)
+    useEffect(() => {
+        let alive = true
+        if (!selected?.id) return
+        fetch(`/api/phenology?id=${encodeURIComponent(selected.id)}`)
+            .then(r => r.json())
+            .then(d => { if (alive) setDaysUntil(d?.nextBloom?.daysUntil ?? null) })
+            .catch(() => { if (alive) setDaysUntil(null) })
+        return () => { alive = false }
+    }, [selected?.id])
+
+    // ===== Ciclo (anotações) =====
+    const [notes, setNotes] = useState<NoteRec[]>([])
+    const [noteTitle, setNoteTitle] = useState('')
+    const [noteBody, setNoteBody] = useState('')
+
+    useEffect(() => { setNotes(loadNotes()) }, [])
+    useEffect(() => { saveNotes(notes) }, [notes])
+
+    const addNote = () => {
+        if (!noteTitle.trim() && !noteBody.trim()) return
+        const rec: NoteRec = {
+            id: crypto.randomUUID(),
+            title: noteTitle.trim() || '(sem título)',
+            body: noteBody.trim(),
+            flowerId: selected?.id ?? '',
+            flowerName: selected?.common ?? '—',
+            daysAtCreation: daysUntil,
+            createdAt: new Date().toISOString(),
+        }
+        setNotes([rec, ...notes])
+        setNoteTitle(''); setNoteBody('')
+    }
+    const delNote = (id: string) => setNotes(notes.filter(n => n.id !== id))
+
+    // 👇 correções mínimas para o seu JSX atual
+    const handleSubmit = addNote
+    const removeNote = delNote
+
     return (
-        <div
-            className="min-h-dvh relative text-[#402613]"
-        >
+        <div className="min-h-dvh relative text-[#402613]">
             <div className="bg-bokeh" aria-hidden />
             <GlassHeader active={tab} onChange={setTab} />
 
             <main className="relative z-10 pt-28 pb-16 px-4 max-w-6xl mx-auto">
 
-                {/* === Estação === */}
+                {/* === Rotina (Estação) === */}
                 {tab === 'estacao' && (
                     <section className="grid gap-4">
-                        <h1 className="text-2xl font-semibold tracking-tight">
-                            Estação &amp; Humor
-                        </h1>
-                        <p className="opacity-80">
-                            Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.
-                        </p>
+                        <h1 className="text-2xl font-semibold tracking-tight">Estação &amp; Humor</h1>
+                        <p className="opacity-80">Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.</p>
 
                         <div className="grid sm:grid-cols-3 gap-3">
                             <GlassCard title="Destaque da estação" subtitle="Primavera">
@@ -104,7 +159,7 @@ export default function UIPage() {
                             </GlassCard>
                         </div>
 
-                        {/* === NOVO: Notícias sobre Biologia === */}
+                        {/* Notícias */}
                         <NewsWall />
                     </section>
                 )}
@@ -122,9 +177,9 @@ export default function UIPage() {
                                         onClick={() => setSelectedId(f.id)}
                                         title={`${f.common} (${f.sci})`}
                                         className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${active
-                                                ? 'ring-2 ring-amber-400 bg-white/60'
-                                                : 'hover:bg-white/40'
-                                            }`}
+                                            ? 'ring-2 ring-amber-400 bg-white/60'
+                                            : 'hover:bg-white/40'
+                                        }`}
                                         aria-pressed={active}
                                     >
                                         <span className="text-2xl">{f.emoji}</span>
@@ -137,12 +192,10 @@ export default function UIPage() {
                         </div>
 
                         <div className="grid gap-8 md:grid-cols-[1fr_420px]">
-                            {/* painel de controles */}
+                            {/* controles */}
                             <div className="glass glass-hairline glass-noise rounded-3xl p-5">
                                 <h2 className="text-xl font-semibold mb-2">Clima &amp; Controles</h2>
-                                <p className="opacity-80 mb-6">
-                                    Ajuste condições e veja a flor reagir.
-                                </p>
+                                <p className="opacity-80 mb-6">Ajuste condições e veja a flor reagir.</p>
                                 <div className="space-y-6">
                                     <Slider label="Luz solar" value={sun} onChange={setSun} icon="☀️" />
                                     <Slider label="Chuva/rega" value={rain} onChange={setRain} icon="💧" />
@@ -150,17 +203,14 @@ export default function UIPage() {
                                 </div>
                             </div>
 
-                            {/* aside da flor selecionada */}
+                            {/* aside */}
                             <aside className="glass glass-hairline glass-noise rounded-3xl p-5 relative">
-                                {/* badge fixo no canto direito */}
                                 <div className="absolute top-3 right-3 select-none pointer-events-none">
                                     {selected?.id && <BloomBadge flowerId={selected.id} />}
                                 </div>
 
                                 <h3 className="font-semibold mb-1">{selected?.common ?? 'Flor'}</h3>
-                                <div className="text-xs italic opacity-70 mb-2">
-                                    {selected?.sci}
-                                </div>
+                                <div className="text-xs italic opacity-70 mb-2">{selected?.sci}</div>
                                 <ul className="list-disc pl-5 space-y-1">
                                     <li>Sol: <b>{desc(sun)}</b> — evite queimar pétalas ao passar de 80%.</li>
                                     <li>Água: <b>{desc(rain)}</b> — drenagem leve em &gt; 60%.</li>
@@ -184,7 +234,6 @@ export default function UIPage() {
                                         onClick={() => { setSelectedId(f.id); setOpen(f) }}
                                         className="relative text-left glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition"
                                     >
-                                        {/* badge fixo no canto direito */}
                                         <div className="absolute top-2 right-2 select-none pointer-events-none">
                                             <BloomBadge flowerId={f.id} />
                                         </div>
@@ -208,10 +257,192 @@ export default function UIPage() {
                     </section>
                 )}
 
-                {/* Polinização / Ciclo – mantenha como já está (se houver) */}
+                {/* === Polinização (mantido) === */}
+                {tab === 'polinizacao' && selected && (
+                    <section className="grid gap-6 md:grid-cols-[minmax(320px,1fr)_minmax(420px,1.2fr)]">
+                        {/* esquerda: flor grande + badge */}
+                        <div className="glass glass-hairline glass-noise rounded-3xl p-5 relative flex items-center justify-center">
+                            <div className="absolute top-3 right-3 select-none pointer-events-none">
+                                <BloomBadge flowerId={selected.id} />
+                            </div>
+                            <div className="text-center">
+                                <FlowerHero size={260} sun={sun} rain={rain} wind={wind} theme={theme} petals={petalCount} />
+                                <div className="mt-3 text-sm">
+                                    <b>{selected.common}</b>
+                                    <div className="text-xs italic opacity-80">{selected.sci}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* direita: cartões */}
+                        <div className="grid gap-4">
+                            <div className="glass glass-hairline glass-noise rounded-2xl p-5">
+                                <h3 className="font-semibold mb-2">Terreno adequado</h3>
+                                <dl className="grid sm:grid-cols-2 gap-2 text-sm">
+                                    <div>
+                                        <dt className="opacity-80">pH ideal</dt>
+                                        <dd>
+                                            <Meter
+                                                value={(poly.soil.phMin + poly.soil.phMax) / 2}
+                                                min={4}
+                                                max={8}
+                                                label={`${poly.soil.phMin.toFixed(1)}–${poly.soil.phMax.toFixed(1)}`}
+                                            />
+                                        </dd>
+                                    </div>
+                                    <div><dt className="opacity-80">Textura</dt><dd><Chip>{poly.soil.texture}</Chip></dd></div>
+                                    <div><dt className="opacity-80">Drenagem</dt><dd><Chip>{poly.soil.drainage}</Chip></dd></div>
+                                    <div><dt className="opacity-80">Luz</dt><dd><Chip>{poly.soil.light}</Chip></dd></div>
+                                </dl>
+                            </div>
+
+                            <div className="glass glass-hairline glass-noise rounded-2xl p-5">
+                                <h3 className="font-semibold mb-2">Polinizadores</h3>
+                                <div className="flex flex-wrap gap-2 text-sm">
+                                    {poly.likelyPollinators.map(p => (
+                                        <Chip key={p}>
+                                            {p === 'abelhas' && '🐝 '}
+                                            {p === 'borboletas' && '🦋 '}
+                                            {p === 'beija-flores' && '🐦‍⬛ '}
+                                            {p === 'morcegos' && '🦇 '}
+                                            {p === 'moscas' && '🪰 '}
+                                            {p}
+                                        </Chip>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="glass glass-hairline glass-noise rounded-2xl p-5">
+                                <h3 className="font-semibold mb-1">Tempo de crescimento</h3>
+                                <p className="text-sm opacity-80 mb-3">
+                                    Estimativa {poly.totalDaysToBloom} dias (semente → floração).
+                                    {typeof daysUntil === 'number' && <> Próx. floração em <b>{daysUntil}d</b>.</>}
+                                </p>
+                                <div className="overflow-x-auto">
+                                    <GrowthChart totalDays={poly.totalDaysToBloom} daysUntilBloom={daysUntil} />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* === CICLO — bloco de notas === */}
+                {tab === 'ciclo' && (
+                    <section className="grid gap-4">
+                        {/* Formulário */}
+                        <div className="glass glass-hairline glass-noise rounded-3xl p-5">
+                            <h2 className="text-xl font-semibold mb-1">Anotações do ciclo</h2>
+                            <p className="text-sm opacity-80 mb-4">
+                                Registre eventos do cultivo. A nota é carimbada com a <b>flor atual</b> e o número de
+                                <b> dias restantes</b> para a próxima floração.
+                            </p>
+
+                            <label className="block mb-3">
+                                <div className="text-sm mb-1">Título</div>
+                                <input
+                                    value={noteTitle}
+                                    onChange={(e) => setNoteTitle(e.target.value)}
+                                    onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
+                                    placeholder="Ex.: Rega reforçada / transplante / adubação"
+                                    className="w-full rounded-xl px-3 py-2 glass glass-hairline"
+                                />
+                            </label>
+
+                            <label className="block">
+                                <div className="text-sm mb-1">Descrição</div>
+                                <textarea
+                                    value={noteBody}
+                                    onChange={(e) => setNoteBody(e.target.value)}
+                                    onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
+                                    rows={4}
+                                    placeholder="Detalhes do que foi feito/observado… (Envie com Ctrl/⌘+Enter)"
+                                    className="w-full rounded-xl px-3 py-2 glass glass-hairline"
+                                />
+                            </label>
+
+                            <div className="mt-4 flex items-center gap-3">
+                                <button
+                                    onClick={handleSubmit}
+                                    className="px-3 py-2 rounded-lg glass glass-hairline hover:bg-white/60"
+                                >
+                                    Salvar nota
+                                </button>
+                                <div className="text-sm opacity-70">
+                                    Flor atual: <b>{selected?.common}</b> • Próx. floração:{' '}
+                                    <b>{daysUntil == null ? '—' : daysUntil === 0 ? '0d' : `${daysUntil}d`}</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Cards das notas (abaixo do form) */}
+                        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                            {notes.length === 0 ? (
+                                <div className="glass glass-hairline glass-noise rounded-2xl p-4 text-sm opacity-80">
+                                    Nenhuma anotação ainda. Escreva um título/descrição acima e salve para criar seu primeiro
+                                    card.
+                                </div>
+                            ) : (
+                                notes.map((n) => {
+                                    // calcula selo e progresso para o anel azul
+                                    const badgeText =
+                                        n.daysAtCreation == null
+                                            ? '—'
+                                            : n.daysAtCreation === 0
+                                                ? 'em floração'
+                                                : `faltam ${n.daysAtCreation}d`
+
+                                    const progress =
+                                        n.daysAtCreation == null
+                                            ? 0
+                                            : Math.max(0, Math.min(100, ((90 - Math.min(90, n.daysAtCreation)) / 90) * 100)))
+
+                                    return (
+                                        <article key={n.id} className="relative glass glass-hairline glass-noise rounded-2xl p-4">
+                                            {/* selo canto direito */}
+                                            <div className="absolute top-2 right-2 select-none pointer-events-none">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-[#402613]">
+                          <svg width="18" height="18" viewBox="0 0 36 36" className="opacity-90">
+                            <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(64,38,19,.25)" strokeWidth="3" />
+                            <circle
+                                cx="18"
+                                cy="18"
+                                r="14"
+                                fill="none"
+                                stroke="#2563eb"
+                                strokeWidth="3"
+                                strokeDasharray={`${(progress / 100) * 88} 88`}
+                                strokeLinecap="round"
+                                transform="rotate(-90 18 18)"
+                            />
+                          </svg>
+                            {badgeText}
+                        </span>
+                                            </div>
+
+                                            <div className="text-xs opacity-70 mb-1">
+                                                {new Date(n.createdAt).toLocaleString()} • {n.flowerName}
+                                            </div>
+                                            <h4 className="font-semibold mb-1 break-words">{n.title}</h4>
+                                            {n.body && <p className="text-sm opacity-90 whitespace-pre-wrap break-words">{n.body}</p>}
+
+                                            <div className="mt-3">
+                                                <button
+                                                    onClick={() => removeNote(n.id)}
+                                                    className="px-2 py-1 rounded-lg glass glass-hairline hover:bg-white/60 text-sm"
+                                                >
+                                                    Apagar
+                                                </button>
+                                            </div>
+                                        </article>
+                                    )
+                                })
+                            )}
+                        </div>
+                    </section>
+                )}
             </main>
-            
-            {/* Modal de detalhes */}
+
+            {/* Modal */}
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
                     <p>
@@ -230,12 +461,13 @@ export default function UIPage() {
                     </div>
                 </Modal>
             )}
+
             <Footer/>
         </div>
     )
 }
 
-/* ========= NOVO: mural de notícias ========= */
+/* ========= Notícias ========= */
 function NewsWall() {
     const [items, setItems] = useState<{ title: string; link: string; date: string; source: string }[]>([])
     const [loading, setLoading] = useState(true)
@@ -294,12 +526,7 @@ function timeAgo(iso: string) {
 }
 
 /* ------- auxiliares ------- */
-
-function desc(v: number) {
-    if (v < 25) return 'baixo'
-    if (v < 60) return 'médio'
-    return 'alto'
-}
+function desc(v: number) { if (v < 25) return 'baixo'; if (v < 60) return 'médio'; return 'alto' }
 
 function GlassCard({ title, subtitle, children }: {
     title: string; subtitle?: string; children: React.ReactNode
@@ -352,5 +579,30 @@ function Modal({ title, subtitle, onClose, children }: {
                 <div>{children}</div>
             </div>
         </div>
+    )
+}
+
+/* helpers visuais usados na aba Polinização */
+function Meter({ value, min, max, label }: { value: number; min: number; max: number; label?: string }) {
+    const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100))
+    return (
+        <div>
+            <div className="h-2 rounded-full bg-[rgba(64,38,19,.15)] relative overflow-hidden">
+                <div className="absolute inset-y-0 left-0" style={{
+                    width: `${pct}%`,
+                    background: 'linear-gradient(90deg,#60a5fa,#22c55e)'
+                }} />
+            </div>
+            <div className="mt-1 text-xs opacity-70">{label ?? value.toFixed(1)}</div>
+        </div>
+    )
+}
+function Chip({ children }: { children: React.ReactNode }) {
+    return (
+        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg
+                     bg-[rgba(255,255,255,.55)] border border-[rgba(255,255,255,.4)]
+                     text-[#402613] text-xs">
+      {children}
+    </span>
     )
 }
