@@ -1,0 +1,682 @@
+[
+  {
+    "id": "ipe-amarelo",
+    "common": "Ipê-amarelo",
+    "sci": "Handroanthus chrysotrichus",
+    "emoji": "💛",
+    "biome": "Mata Atlântica e Cerrado",
+    "season": "inverno/primavera (geralmente ago–set)",
+    "summary": "Árvore ornamental de pequeno a médio porte; flores intensamente amarelas na seca.",
+    "colors": {
+      "petalStart": "#fde047",
+      "petalEnd": "#f59e0b",
+      "centerStart": "#fef08a",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 6
+    }
+  },
+  {
+    "id": "ipe-roxo",
+    "common": "Ipê-roxo",
+    "sci": "Handroanthus impetiginosus",
+    "emoji": "🌳",
+    "biome": "Amazônia, Caatinga, Cerrado, Mata Atlântica, Pantanal",
+    "season": "maio–ago",
+    "summary": "Decíduo; flores roxas em panículas durante a seca. Muito usado em arborização.",
+    "colors": {
+      "petalStart": "#a78bfa",
+      "petalEnd": "#7c3aed",
+      "centerStart": "#fde68a",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 8
+    }
+  },
+  {
+    "id": "pau-brasil",
+    "common": "Pau-brasil",
+    "sci": "Paubrasilia echinata",
+    "emoji": "🌳",
+    "biome": "Mata Atlântica litorânea",
+    "season": "floração dez–jul",
+    "summary": "Árvore simbólica do Brasil; polinização por abelhas; faixa costeira do RJ ao RN.",
+    "colors": {
+      "petalStart": "#ef4444",
+      "petalEnd": "#991b1b",
+      "centerStart": "#f59e0b",
+      "centerEnd": "#b45309",
+      "stemStart": "#065f46",
+      "stemEnd": "#064e3b",
+      "leaf1": "#16a34a",
+      "leaf2": "#065f46",
+      "petalCount": 8
+    }
+  },
+  {
+    "id": "vitoria-regia",
+    "common": "Vitória-régia",
+    "sci": "Victoria amazonica",
+    "emoji": "🪷",
+    "biome": "Amazônia, águas calmas",
+    "season": "flores noturnas (mudam de branco → rosa na 2ª noite)",
+    "summary": "Gigante aquática: flores aquecem e atraem besouros; mudam de cor na segunda noite.",
+    "colors": {
+      "petalStart": "#fbcfe8",
+      "petalEnd": "#f472b6",
+      "centerStart": "#fde68a",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 12
+    }
+  },
+  {
+    "id": "manaca-da-serra",
+    "common": "Manacá-da-serra",
+    "sci": "Pleroma mutabile",
+    "emoji": "💜",
+    "biome": "Mata Atlântica (Serra do Mar)",
+    "season": "primavera/verão",
+    "summary": "Flores mudam de branco → lilás-claro → lilás-escuro; típica da encosta atlântica.",
+    "colors": {
+      "petalStart": "#c4b5fd",
+      "petalEnd": "#8b5cf6",
+      "centerStart": "#fde68a",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 8
+    }
+  },
+  {
+    "id": "cattleya-labiata",
+    "common": "Cattleya labiata",
+    "sci": "Cattleya labiata",
+    "emoji": "🌸",
+    "biome": "NE/N/SE do Brasil (epífita)",
+    "season": "final do verão ao início do outono",
+    "summary": "“Rainha do Nordeste”: orquídea epífita; flores grandes e perfumadas.",
+    "colors": {
+      "petalStart": "#f9a8d4",
+      "petalEnd": "#ec4899",
+      "centerStart": "#fde68a",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 7
+    }
+  },
+  {
+    "id": "bromelia",
+    "common": "Bromélia",
+    "sci": "Bromelia antiacantha",
+    "emoji": "🌺",
+    "biome": "Mata Atlântica, Restinga",
+    "season": "dez–fev",
+    "summary": "Planta terrestre com folhas em roseta e espinhos; base das folhas avermelhada durante a floração.",
+    "colors": {
+      "petalStart": "#f43f5e",
+      "petalEnd": "#be123c",
+      "centerStart": "#fbbf24",
+      "centerEnd": "#d97706",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "flor-de-maio",
+    "common": "Flor-de-maio",
+    "sci": "Schlumbergera truncata",
+    "emoji": "🌺",
+    "biome": "Mata Atlântica",
+    "season": "outono/inverno (abr–set)",
+    "summary": "Cacto epífita que cresce em troncos e rochas; floresce abundantemente em diversas cores.",
+    "colors": {
+      "petalStart": "#f9a8d4",
+      "petalEnd": "#ec4899",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 9
+    }
+  },
+  {
+    "id": "heliconia",
+    "common": "Helicônia",
+    "sci": "Heliconia velloziana",
+    "emoji": "🌿",
+    "biome": "Mata Atlântica",
+    "season": "verão",
+    "summary": "Planta tropical com inflorescências exóticas e coloridas, polinizada por beija-flores.",
+    "colors": {
+      "petalStart": "#ef4444",
+      "petalEnd": "#b91c1c",
+      "centerStart": "#facc15",
+      "centerEnd": "#eab308",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 4
+    }
+  },
+  {
+    "id": "begonia",
+    "common": "Begônia",
+    "sci": "Begonia coccinea",
+    "emoji": "🌸",
+    "biome": "Mata Atlântica (RJ e ES)",
+    "season": "ano todo, com picos na primavera e verão",
+    "summary": "Herbácea com folhas assimétricas (asa-de-anjo); flores pendentes róseas a avermelhadas.",
+    "colors": {
+      "petalStart": "#f9a8d4",
+      "petalEnd": "#ec4899",
+      "centerStart": "#fde047",
+      "centerEnd": "#facc15",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "primavera",
+    "common": "Primavera",
+    "sci": "Bougainvillea glabra",
+    "emoji": "🌺",
+    "biome": "Nativo do Brasil, adaptado a diversos biomas",
+    "season": "primavera e verão",
+    "summary": "Arbusto trepador com brácteas (folhas modificadas) coloridas que envolvem as verdadeiras flores.",
+    "colors": {
+      "petalStart": "#f472b6",
+      "petalEnd": "#db2777",
+      "centerStart": "#fefce8",
+      "centerEnd": "#fef9c3",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 3
+    }
+  },
+  {
+    "id": "jacaranda-mimoso",
+    "common": "Jacarandá-mimoso",
+    "sci": "Jacaranda mimosifolia",
+    "emoji": "💜",
+    "biome": "Sul do Brasil, Argentina e Bolívia",
+    "season": "ago–nov",
+    "summary": "Árvore ornamental com flores tubulares azul-arroxeadas que surgem antes das folhas.",
+    "colors": {
+      "petalStart": "#a78bfa",
+      "petalEnd": "#7c3aed",
+      "centerStart": "#fef3c7",
+      "centerEnd": "#fde68a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "caliandra",
+    "common": "Caliandra",
+    "sci": "Calliandra dysantha",
+    "emoji": "🌸",
+    "biome": "Cerrado",
+    "season": "ano todo, com picos na primavera e verão",
+    "summary": "Arbusto típico do Cerrado com flores que parecem pompons vermelhos devido aos longos estames.",
+    "colors": {
+      "petalStart": "#f43f5e",
+      "petalEnd": "#be123c",
+      "centerStart": "#fef9c3",
+      "centerEnd": "#fef08a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 20
+    }
+  },
+  {
+    "id": "alamanda",
+    "common": "Alamanda",
+    "sci": "Allamanda cathartica",
+    "emoji": "💛",
+    "biome": "Nativo da América do Sul, comum em todo o Brasil",
+    "season": "ano todo, principalmente na primavera e verão",
+    "summary": "Trepadeira com flores grandes e amarelas em forma de trombeta; polinizada por abelhas e borboletas.",
+    "colors": {
+      "petalStart": "#fde047",
+      "petalEnd": "#f59e0b",
+      "centerStart": "#fef3c7",
+      "centerEnd": "#fde68a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "flamboyant",
+    "common": "Flamboyant",
+    "sci": "Delonix regia",
+    "emoji": "🌳",
+    "biome": "Nativo de Madagascar, amplamente cultivado no Brasil",
+    "season": "set–jan",
+    "summary": "Árvore de grande porte com copa ampla e flores vermelhas ou alaranjadas muito vistosas.",
+    "colors": {
+      "petalStart": "#ef4444",
+      "petalEnd": "#b91c1c",
+      "centerStart": "#facc15",
+      "centerEnd": "#eab308",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "ipe-rosa",
+    "common": "Ipê-rosa",
+    "sci": "Handroanthus heptaphyllus",
+    "emoji": "🌸",
+    "biome": "Nativo do Brasil, presente em diversos biomas",
+    "season": "mai–set",
+    "summary": "Madeira de lei com floração exuberante em tons de rosa que cobre toda a copa da árvore.",
+    "colors": {
+      "petalStart": "#f9a8d4",
+      "petalEnd": "#ec4899",
+      "centerStart": "#fef3c7",
+      "centerEnd": "#fde68a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "amaranto",
+    "common": "Amaranto",
+    "sci": "Amaranthus cruentus",
+    "emoji": "🌾",
+    "biome": "Planta espontânea, adaptada a diversas regiões",
+    "season": "épocas quentes e chuvosas",
+    "summary": "Planta de ciclo curto com inflorescências pendentes em tons de vermelho, rosa ou dourado.",
+    "colors": {
+      "petalStart": "#be123c",
+      "petalEnd": "#881337",
+      "centerStart": "#fef9c3",
+      "centerEnd": "#fef08a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 0
+    }
+  },
+  {
+    "id": "cipo-de-sao-joao",
+    "common": "Cipó-de-são-joão",
+    "sci": "Pyrostegia venusta",
+    "emoji": "🔥",
+    "biome": "Sul e Sudeste do Brasil",
+    "season": "inverno (jul–set)",
+    "summary": "Trepadeira com flores tubulares alaranjadas, muito ornamental, que atrai beija-flores.",
+    "colors": {
+      "petalStart": "#fb923c",
+      "petalEnd": "#f97316",
+      "centerStart": "#fef3c7",
+      "centerEnd": "#fde68a",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "onze-horas",
+    "common": "Onze-horas",
+    "sci": "Portulaca grandiflora",
+    "emoji": "☀️",
+    "biome": "Nativa da América do Sul, comum em todo o Brasil",
+    "season": "primavera e verão",
+    "summary": "Suculenta rasteira com flores que se abrem sob o sol forte, em uma vasta gama de cores.",
+    "colors": {
+      "petalStart": "#f9a8d4",
+      "petalEnd": "#ec4899",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "quaresmeira",
+    "common": "Quaresmeira",
+    "sci": "Pleroma granulosum",
+    "emoji": "💜",
+    "biome": "Mata Atlântica",
+    "season": "outono e inverno",
+    "summary": "Árvore de porte médio com floração abundante em tons de roxo, muito utilizada em paisagismo.",
+    "colors": {
+      "petalStart": "#c084fc",
+      "petalEnd": "#9333ea",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "dama-da-noite",
+    "common": "Dama-da-noite",
+    "sci": "Cestrum nocturnum",
+    "emoji": "🌙",
+    "biome": "Nativa das Américas, cultivada no Brasil",
+    "season": "primavera e verão",
+    "summary": "Arbusto com flores que se abrem à noite, exalando um perfume intenso e característico.",
+    "colors": {
+      "petalStart": "#fefce8",
+      "petalEnd": "#fef9c3",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "brinco-de-princesa",
+    "common": "Brinco-de-princesa",
+    "sci": "Fuchsia hybrida",
+    "emoji": "👑",
+    "biome": "Nativa da América do Sul, cultivada no Brasil",
+    "season": "primavera e outono",
+    "summary": "Arbusto com flores pendentes e bicolores, geralmente em tons de rosa, roxo e branco.",
+    "colors": {
+      "petalStart": "#f472b6",
+      "petalEnd": "#db2777",
+      "centerStart": "#a78bfa",
+      "centerEnd": "#7c3aed",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 4
+    }
+  },
+  {
+    "id": "lagrima-de-cristo",
+    "common": "Lágrima-de-cristo",
+    "sci": "Clerodendrum thomsonae",
+    "emoji": "💧",
+    "biome": "Nativa da África, cultivada no Brasil",
+    "season": "primavera e verão",
+    "summary": "Trepadeira com flores bicolores, com cálice branco e corola vermelha, muito ornamental.",
+    "colors": {
+      "petalStart": "#fefce8",
+      "petalEnd": "#fef9c3",
+      "centerStart": "#dc2626",
+      "centerEnd": "#991b1b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "angelica",
+    "common": "Angélica",
+    "sci": "Angelica archangelica",
+    "emoji": "😇",
+    "biome": "Nativa da Europa, cultivada no Brasil",
+    "season": "verão",
+    "summary": "Planta herbácea com inflorescências em umbelas esféricas e flores brancas ou esverdeadas.",
+    "colors": {
+      "petalStart": "#f0fdf4",
+      "petalEnd": "#dcfce7",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 100
+    }
+  },
+  {
+    "id": "agapanto",
+    "common": "Agapanto",
+    "sci": "Agapanthus africanus",
+    "emoji": "💙",
+    "biome": "Nativo da África do Sul, cultivado no Brasil",
+    "season": "primavera e verão",
+    "summary": "Herbácea com inflorescências globosas em tons de azul, lilás ou branco, em longas hastes.",
+    "colors": {
+      "petalStart": "#93c5fd",
+      "petalEnd": "#3b82f6",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 6
+    }
+  },
+  {
+    "id": "azulzinha",
+    "common": "Azulzinha",
+    "sci": "Evolvulus glomeratus",
+    "emoji": "💙",
+    "biome": "Nativo do Brasil",
+    "season": "ano todo",
+    "summary": "Forração perene com flores pequenas e delicadas de um azul intenso, muito resistente.",
+    "colors": {
+      "petalStart": "#60a5fa",
+      "petalEnd": "#2563eb",
+      "centerStart": "#fefce8",
+      "centerEnd": "#fef9c3",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "bico-de-papagaio",
+    "common": "Bico-de-papagaio",
+    "sci": "Euphorbia pulcherrima",
+    "emoji": "🦜",
+    "biome": "Nativo do México, cultivado no Brasil",
+    "season": "outono",
+    "summary": "Arbusto conhecido pelas brácteas (folhas modificadas) vermelhas que lembram flores; símbolo do Natal.",
+    "colors": {
+      "petalStart": "#ef4444",
+      "petalEnd": "#b91c1c",
+      "centerStart": "#facc15",
+      "centerEnd": "#eab308",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 0
+    }
+  },
+  {
+    "id": "maracuja-ornamental",
+    "common": "Maracujá ornamental",
+    "sci": "Passiflora spp.",
+    "emoji": "🌺",
+    "biome": "Nativo da América do Sul, comum em todo o Brasil",
+    "season": "ano todo, principalmente no verão",
+    "summary": "Trepadeira com flores exóticas e vistosas, geralmente em tons de vermelho, rosa ou roxo.",
+    "colors": {
+      "petalStart": "#ef4444",
+      "petalEnd": "#b91c1c",
+      "centerStart": "#a78bfa",
+      "centerEnd": "#7c3aed",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 10
+    }
+  },
+  {
+    "id": "camelia",
+    "common": "Camélia",
+    "sci": "Camellia japonica",
+    "emoji": "🌸",
+    "biome": "Nativa da Ásia, cultivada no Brasil",
+    "season": "outono e inverno",
+    "summary": "Arbusto com flores grandes e vistosas, em tons de branco, rosa ou vermelho, e folhagem brilhante.",
+    "colors": {
+      "petalStart": "#fbcfe8",
+      "petalEnd": "#f472b6",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 9
+    }
+  },
+  {
+    "id": "gardenia",
+    "common": "Gardênia",
+    "sci": "Gardenia jasminoides",
+    "emoji": "🤍",
+    "biome": "Nativa da Ásia, cultivada no Brasil",
+    "season": "primavera e verão",
+    "summary": "Arbusto com flores brancas ou creme, muito perfumadas, e folhagem verde-escura e brilhante.",
+    "colors": {
+      "petalStart": "#fefce8",
+      "petalEnd": "#fef9c3",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 8
+    }
+  },
+  {
+    "id": "hibisco",
+    "common": "Hibisco",
+    "sci": "Hibiscus rosa-sinensis",
+    "emoji": "🌺",
+    "biome": "Nativo da Ásia, cultivado em regiões tropicais do Brasil",
+    "season": "primavera e verão",
+    "summary": "Arbusto com flores grandes e vistosas em diversas cores, como vermelho, rosa, amarelo e branco.",
+    "colors": {
+      "petalStart": "#f43f5e",
+      "petalEnd": "#be123c",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "jasmim",
+    "common": "Jasmim",
+    "sci": "Jasminum spp.",
+    "emoji": "🤍",
+    "biome": "Nativo de regiões tropicais e subtropicais, cultivado no Brasil",
+    "season": "primavera e verão",
+    "summary": "Trepadeira ou arbusto com flores geralmente brancas ou amarelas, conhecidas pelo perfume adocicado.",
+    "colors": {
+      "petalStart": "#fefce8",
+      "petalEnd": "#fef9c3",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 5
+    }
+  },
+  {
+    "id": "lirio",
+    "common": "Lírio",
+    "sci": "Lilium spp.",
+    "emoji": "🧡",
+    "biome": "Nativo do Hemisfério Norte, cultivado no Brasil",
+    "season": "verão",
+    "summary": "Planta bulbosa com flores grandes e vistosas em forma de trombeta, em diversas cores e muito perfumadas.",
+    "colors": {
+      "petalStart": "#fb923c",
+      "petalEnd": "#f97316",
+      "centerStart": "#fefce8",
+      "centerEnd": "#fef9c3",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 6
+    }
+  },
+  {
+    "id": "margarida",
+    "common": "Margarida",
+    "sci": "Leucanthemum vulgare",
+    "emoji": "🌼",
+    "biome": "Nativa da Europa, cultivada no Brasil",
+    "season": "primavera e verão",
+    "summary": "Flor silvestre com pétalas brancas e centro amarelo, símbolo de simplicidade e pureza.",
+    "colors": {
+      "petalStart": "#fefce8",
+      "petalEnd": "#fef9c3",
+      "centerStart": "#fde047",
+      "centerEnd": "#f59e0b",
+      "stemStart": "#16a34a",
+      "stemEnd": "#065f46",
+      "leaf1": "#22c55e",
+      "leaf2": "#16a34a",
+      "petalCount": 20
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "NM_REGIAO": "Norte", "CD_REGIAO": 1, "slug": "norte" },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [[[[-73.99,-7.01],[-73.10,-9.45],...]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NM_REGIAO": "Nordeste", "CD_REGIAO": 2, "slug": "nordeste" },
+      "geometry": { "type": "MultiPolygon", "coordinates": [[[[-44.9,-2.8],...]]]}
+    }
+    // … Sudeste, Sul, Centro-Oeste
+  ]
+}

@@ -1,26 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
 @import "tailwindcss";
 
+
+/* ======== BASE (light) ======== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    /* Paleta pedida */
+    --background: #FDF8E8;   /* fundo mais quente */
+    --foreground: #ffdaac;   /* textos */
+
+    /* Acentos (caso queira usar no futuro) */
+    --brand-accent: #FFB700;
+    --brand-accent-2: #ffe0b0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-lexend-deca);
+    --font-mono: var(--font-roboto-mono)
 }
 
+/* ======== BASE (dark) ======== */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #ffba05;
+        --foreground: #ededed;
+    }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Lexend Deca", Arial, Helvetica, sans-serif;
+}
+
+/* ---------- Apple Glass tokens ---------- */
+/* LIGHT: levemente amarelado */
+:root{
+    color-scheme: light dark;
+
+    /* Tinta amarelada sutil no glass (1ª camada) + base translúcida */
+    --glass-bg:
+            linear-gradient(0deg, rgba(255,183,0,.06), rgba(211, 211, 211, 0.5)),
+            rgba(255,255,255,0.60);
+
+    /* Borda/hairline com leve âmbar */
+    --glass-border: color-mix(in oklab, #D27E00 35%, #ffffff 65%);
+    /* Filete interno um pouco mais claro, com toque quente */
+    --glass-inner: color-mix(in oklab, #ffffff 80%, #FFB700 20%);
+
+    /* Sombra com um leve âmbar (bem sutil) */
+    --glass-shadow: 0 8px 28px rgba(210,126,0,.10);
+
+    --glass-blur: 18px;
+    --glass-sat: 180%;
+}
+
+/* DARK: mantém seu look anterior */
+@media (prefers-color-scheme: dark){
+    :root{
+        --glass-bg: rgba(211, 211, 211, 0.3);
+        --glass-border: rgba(255,255,255,0.16);
+        --glass-inner: rgba(255,255,255,0.28);
+        --glass-shadow: 0 16px 36px rgba(0,0,0,.45);
+    }
+}
+
+/* ---------- Utilities (Tailwind-safe) ---------- */
+@layer utilities {
+    .glass {
+        position: relative;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        -webkit-backdrop-filter: saturate(var(--glass-sat)) blur(var(--glass-blur));
+        backdrop-filter: saturate(var(--glass-sat)) blur(var(--glass-blur));
+        box-shadow: var(--glass-shadow);
+    }
+    .glass-hairline::after {
+        content: "";
+        pointer-events: none;
+        position: absolute; inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 0 var(--glass-inner);
+    }
+    .glass-noise::before {
+        content: "";
+        position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        opacity: .05; mix-blend-mode: overlay;
+        background-image:
+                radial-gradient(1px 1px at 25% 20%, #ffea63 99%, transparent 100%),
+                radial-gradient(1px 1px at 75% 30%, #ffed75 99%, transparent 100%),
+                radial-gradient(1px 1px at 40% 80%, #ffdf49 99%, transparent 100%),
+                radial-gradient(1px 1px at 60% 60%, #ffd83b 99%, transparent 100%);
+        background-size: 200px 200px, 240px 240px, 180px 180px, 220px 220px;
+    }
+
+    /* Fundo bokeh aquecido para combinar com o tema */
+    .bg-bokeh::before{
+        content:"";
+        position: fixed;
+        inset: -10% -10% -10% -10%;
+        z-index: 0;
+
+        /* remove os efeitos para não “sujar” a cor plana */
+        filter: none;
+
+        /* <<< AQUI: cor única no lugar dos radial-gradients */
+
+        background: #FE9500;
+        background: linear-gradient(90deg,rgba(254, 149, 0, 1) 0%, rgba(253, 248, 232, 1) 0%, rgba(255, 203, 71, 1) 30%, rgba(255, 183, 0, 1) 100%);
+    }
+    @media (prefers-reduced-motion: reduce){
+        .bg-bokeh::before{ filter: blur(18px); }
+    }
 }
