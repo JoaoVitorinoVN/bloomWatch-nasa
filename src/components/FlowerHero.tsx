@@ -25,14 +25,12 @@ type Props = {
 export default function FlowerHero({
                                        size = 220, sun = 50, rain = 10, wind = 10, theme, petals = 8
                                    }: Props) {
-    // clamps/normalize
     const clamp = (v:number) => Math.min(Math.max(v, 0), 100)
     const sunN  = clamp(sun)  / 100
     const rainN = clamp(rain) / 100
     const windN = clamp(wind) / 100
     const round = (n:number) => +n.toFixed(3)
 
-    // defaults + tema
     const petalStart  = theme?.petalStart  ?? '#fca5a5'
     const petalEnd    = theme?.petalEnd    ?? '#ef4444'
     const centerStart = theme?.centerStart ?? '#fde68a'
@@ -42,7 +40,6 @@ export default function FlowerHero({
     const leaf1       = theme?.leaf1       ?? '#22c55e'
     const leaf2       = theme?.leaf2       ?? '#16a34a'
 
-    // visual params
     const ampDeg     = (1 + windN * 9).toFixed(2) + 'deg'
     const speedS     = Math.max(1.2, 4 - windN * 3).toFixed(2) + 's'
     const sunSat     = (0.9 + sunN * 0.9).toFixed(2)
@@ -153,8 +150,6 @@ export default function FlowerHero({
     )
 }
 
-// --- subcomponentes auxiliares ---
-
 function Cloud() {
     return (
         <g>
@@ -165,7 +160,6 @@ function Cloud() {
         </g>
     )
 }
-
 function Raindrop({ x, delay = 0, speed = 2 }: { x: number; delay?: number; speed?: number }) {
     return (
         <g className="drop" style={{ animationDuration: `${speed}s`, animationDelay: `${delay}s` }}>

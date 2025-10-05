@@ -116,7 +116,7 @@ export default function UIPage() {
                                         title={`${f.common} (${f.sci})`}
                                         className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
                                             active
-                                                ? 'ring-2 ring-emerald-400 bg-white/60 dark:bg-white/20'
+                                                ? 'ring-2 ring-[#FFB700] bg-white/60 dark:bg-white/20'  /* <- amarelo novo */
                                                 : 'hover:bg-white/40 dark:hover:bg-white/10'
                                         }`}
                                         aria-pressed={active}
@@ -264,7 +264,7 @@ function Slider({ label, value, onChange, icon }:{
                 <input
                     type="range" min={0} max={100} value={value}
                     onChange={(e)=>onChange(Number(e.target.value))}
-                    className="w-full accent-emerald-600"
+                    className="w-full accent-[#FFB700]"  /* <- amarelo novo no slider */
                     aria-valuemin={0} aria-valuemax={100} aria-valuenow={value} aria-label={label}
                 />
             </div>
