@@ -4,11 +4,11 @@
 :root {
     /* Paleta pedida */
     --background: #FDF8E8;   /* fundo mais quente */
-    --foreground: #4B392E;   /* textos */
+    --foreground: #ffdaac;   /* textos */
 
     /* Acentos (caso queira usar no futuro) */
     --brand-accent: #FFB700;
-    --brand-accent-2: #D27E00;
+    --brand-accent-2: #ffe0b0;
 }
 
 @theme inline {
@@ -39,7 +39,7 @@ body {
 
     /* Tinta amarelada sutil no glass (1ª camada) + base translúcida */
     --glass-bg:
-            linear-gradient(0deg, rgba(255,183,0,.06), rgba(255,183,0,.06)),
+            linear-gradient(0deg, rgba(255,183,0,.06), rgba(211, 211, 211, 0.5)),
             rgba(255,255,255,0.60);
 
     /* Borda/hairline com leve âmbar */
@@ -57,7 +57,7 @@ body {
 /* DARK: mantém seu look anterior */
 @media (prefers-color-scheme: dark){
     :root{
-        --glass-bg: rgba(24,24,27,0.30);
+        --glass-bg: rgba(211, 211, 211, 0.3);
         --glass-border: rgba(255,255,255,0.16);
         --glass-inner: rgba(255,255,255,0.28);
         --glass-shadow: 0 16px 36px rgba(0,0,0,.45);
@@ -105,7 +105,8 @@ body {
 
         /* <<< AQUI: cor única no lugar dos radial-gradients */
 
-        background: #9A5410;
+        background: #FE9500;
+        background: linear-gradient(90deg,rgba(254, 149, 0, 1) 0%, rgba(253, 248, 232, 1) 0%, rgba(255, 203, 71, 1) 30%, rgba(255, 183, 0, 1) 100%);
     }
     @media (prefers-reduced-motion: reduce){
         .bg-bokeh::before{ filter: blur(18px); }

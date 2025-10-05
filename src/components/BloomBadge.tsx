@@ -36,9 +36,9 @@ export default function BloomBadge({ flowerId, lat, lng, className = '' }: Props
         return Math.max(0, Math.min(100, Math.round((1 - Math.min(days, 90) / 90) * 100)));
     }, [days]);
 
-    // tipografia branca; sem bg/border; NENHUM posicionamento aqui!
+    // texto continua no marrom solicitado
     const cls =
-        'inline-flex items-center gap-1.5 text-[11px] font-medium text-white drop-shadow ' + className;
+        'inline-flex items-center gap-1.5 text-[11px] font-medium text-[#402613] drop-shadow ' + className;
 
     if (loading) {
         return (
@@ -58,24 +58,27 @@ export default function BloomBadge({ flowerId, lat, lng, className = '' }: Props
                 src === 'inat' ? 'Previsto por iNaturalist' : src === 'season' ? 'Estimado pela estação' : ''
             }
         >
-      {/* anel de progresso (sem fundo) */}
+      {/* anel de progresso em AZUL */}
             <svg width="18" height="18" viewBox="0 0 36 36" className="opacity-90">
-        <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,.25)" strokeWidth="3" />
-        <circle
-            cx="18"
-            cy="18"
-            r="14"
-            fill="none"
-            stroke="url(#g)"
-            strokeWidth="3"
-            strokeDasharray={`${(pct / 100) * 88} 88`}
-            strokeLinecap="round"
-            transform="rotate(-90 18 18)"
-        />
+        {/* anel de fundo (azul translúcido) */}
+                <circle cx="18" cy="18" r="14" fill="none" stroke="rgba(59,130,246,.25)" strokeWidth="3" />
+                {/* progresso (degradê azul claro → azul) */}
+                <circle
+                    cx="18"
+                    cy="18"
+                    r="14"
+                    fill="none"
+                    stroke="url(#g)"
+                    strokeWidth="3"
+                    strokeDasharray={`${(pct / 100) * 88} 88`}
+                    strokeLinecap="round"
+                    transform="rotate(-90 18 18)"
+                />
         <defs>
-          <linearGradient id="g" x1="0" y1="0" x2="36" y2="36">
-            <stop offset="0%" stopColor="#60a5fa" />
-            <stop offset="100%" stopColor="#22c55e" />
+          {/* azul claro (#93C5FD) → azul padrão (#3B82F6) */}
+            <linearGradient id="g" x1="0" y1="0" x2="36" y2="36">
+            <stop offset="0%" stopColor="#93C5FD" />
+            <stop offset="100%" stopColor="#3B82F6" />
           </linearGradient>
         </defs>
       </svg>
@@ -85,5 +88,6 @@ export default function BloomBadge({ flowerId, lat, lng, className = '' }: Props
 }
 
 function SpinnerDot() {
-    return <span className="inline-block w-2 h-2 rounded-full bg-white/70 animate-pulse" aria-hidden />;
+    // pontinho do "carregando" também em azul
+    return <span className="inline-block w-2 h-2 rounded-full bg-[#3B82F6]/70 animate-pulse" aria-hidden />;
 }

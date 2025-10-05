@@ -73,7 +73,15 @@ export default function UIPage() {
     const petalCount = selected?.colors?.petalCount ?? 8
 
     return (
-        <div className="min-h-dvh relative bg-gradient-to-br from-emerald-50 via-sky-50 to-fuchsia-50 dark:from-slate-900 dark:via-slate-950 dark:to-black">
+        <div
+            className="
+        min-h-dvh relative
+        bg-gradient-to-br
+        from-[rgba(253,248,232,1)] via-[rgba(232,170,80,0.16)] to-[rgba(210,126,0,0.22)]
+        text-[#402613]
+
+      "
+        >
             <div className="bg-bokeh" aria-hidden />
             <GlassHeader active={tab} onChange={setTab} />
 
@@ -82,12 +90,13 @@ export default function UIPage() {
                 {/* === Estação === */}
                 {tab === 'estacao' && (
                     <section className="grid gap-4">
-                        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                        <h1 className="text-2xl font-semibold tracking-tight">
                             Estação &amp; Humor
                         </h1>
-                        <p className="text-slate-700 dark:text-slate-300">
+                        <p className="opacity-80">
                             Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.
                         </p>
+
                         <div className="grid sm:grid-cols-3 gap-3">
                             <GlassCard title="Destaque da estação" subtitle="Primavera">
                                 🌼 Pico de floração para espécies ornamentais — regas moderadas.
@@ -99,6 +108,9 @@ export default function UIPage() {
                                 🌺 <b>Hibiscus rosa-sinensis</b> — florece bem com sol filtrado.
                             </GlassCard>
                         </div>
+
+                        {/* === NOVO: Notícias sobre Biologia === */}
+                        <NewsWall />
                     </section>
                 )}
 
@@ -116,8 +128,8 @@ export default function UIPage() {
                                         title={`${f.common} (${f.sci})`}
                                         className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
                                             active
-                                                ? 'ring-2 ring-[#FFB700] bg-white/60 dark:bg-white/20'  /* <- amarelo novo */
-                                                : 'hover:bg-white/40 dark:hover:bg-white/10'
+                                                ? 'ring-2 ring-amber-400 bg-white/60'
+                                                : 'hover:bg-white/40'
                                         }`}
                                         aria-pressed={active}
                                     >
@@ -125,7 +137,7 @@ export default function UIPage() {
                                     </button>
                                 )
                             })}
-                            <div className="ml-2 text-sm self-center text-slate-700 dark:text-slate-300">
+                            <div className="ml-2 text-sm self-center opacity-80">
                                 {selected ? <>Flor atual: <b>{selected.common}</b></> : '—'}
                             </div>
                         </div>
@@ -133,10 +145,8 @@ export default function UIPage() {
                         <div className="grid gap-8 md:grid-cols-[1fr_420px]">
                             {/* painel de controles */}
                             <div className="glass glass-hairline glass-noise rounded-3xl p-5">
-                                <h2 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
-                                    Clima &amp; Controles
-                                </h2>
-                                <p className="text-slate-700 dark:text-slate-300 mb-6">
+                                <h2 className="text-xl font-semibold mb-2">Clima &amp; Controles</h2>
+                                <p className="opacity-80 mb-6">
                                     Ajuste condições e veja a flor reagir.
                                 </p>
                                 <div className="space-y-6">
@@ -148,18 +158,16 @@ export default function UIPage() {
 
                             {/* aside da flor selecionada */}
                             <aside className="glass glass-hairline glass-noise rounded-3xl p-5 relative">
-                                {/* WRAPPER ABSOLUTO: garante canto direito SEMPRE */}
+                                {/* badge fixo no canto direito */}
                                 <div className="absolute top-3 right-3 select-none pointer-events-none">
                                     {selected?.id && <BloomBadge flowerId={selected.id} />}
                                 </div>
 
-                                <h3 className="font-semibold mb-1 text-slate-900 dark:text-white">
-                                    {selected?.common ?? 'Flor'}
-                                </h3>
-                                <div className="text-xs italic text-slate-600 dark:text-slate-300 mb-2">
+                                <h3 className="font-semibold mb-1">{selected?.common ?? 'Flor'}</h3>
+                                <div className="text-xs italic opacity-70 mb-2">
                                     {selected?.sci}
                                 </div>
-                                <ul className="list-disc pl-5 space-y-1 text-slate-800 dark:text-slate-200">
+                                <ul className="list-disc pl-5 space-y-1">
                                     <li>Sol: <b>{desc(sun)}</b> — evite queimar pétalas ao passar de 80%.</li>
                                     <li>Água: <b>{desc(rain)}</b> — drenagem leve em &gt; 60%.</li>
                                     <li>Vento: <b>{desc(wind)}</b> — tutor leve se for &gt; 50%.</li>
@@ -174,7 +182,7 @@ export default function UIPage() {
 
                         {/* lista de flores */}
                         <div className="space-y-2">
-                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Flores do Brasil</h2>
+                            <h2 className="text-lg font-semibold">Flores do Brasil</h2>
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {flowers.map((f) => (
                                     <button
@@ -182,7 +190,7 @@ export default function UIPage() {
                                         onClick={() => { setSelectedId(f.id); setOpen(f) }}
                                         className="relative text-left glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition"
                                     >
-                                        {/* WRAPPER ABSOLUTO: canto direito garantido */}
+                                        {/* badge fixo no canto direito */}
                                         <div className="absolute top-2 right-2 select-none pointer-events-none">
                                             <BloomBadge flowerId={f.id} />
                                         </div>
@@ -190,11 +198,11 @@ export default function UIPage() {
                                         <div className="flex items-center gap-3">
                                             <span className="text-3xl">{f.emoji}</span>
                                             <div>
-                                                <div className="font-semibold text-slate-900 dark:text-white">{f.common}</div>
-                                                <div className="text-xs italic text-slate-600 dark:text-slate-300">{f.sci}</div>
+                                                <div className="font-semibold">{f.common}</div>
+                                                <div className="text-xs italic opacity-70">{f.sci}</div>
                                             </div>
                                         </div>
-                                        <div className="mt-2 text-sm text-slate-800 dark:text-slate-200">
+                                        <div className="mt-2 text-sm">
                                             <b>Bioma:</b> {f.biome}<br/>
                                             <b>Fenologia:</b> {f.season}<br/>
                                             {f.summary}
@@ -206,21 +214,21 @@ export default function UIPage() {
                     </section>
                 )}
 
-                {/* Polinização / Ciclo – mantenha como já está */}
+                {/* Polinização / Ciclo – mantenha como já está (se houver) */}
             </main>
 
             {/* Modal de detalhes */}
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
-                    <p className="text-slate-800 dark:text-slate-200">
+                    <p>
                         <b>Bioma:</b> {open.biome}<br/>
                         <b>Fenologia:</b> {open.season}
                     </p>
-                    <p className="mt-2 text-slate-700 dark:text-slate-300">{open.summary}</p>
+                    <p className="mt-2 opacity-80">{open.summary}</p>
 
                     <div className="mt-4 flex justify-end">
                         <button
-                            className="glass glass-hairline rounded-lg px-3 py-2 hover:bg-white/60 dark:hover:bg-white/20"
+                            className="glass glass-hairline rounded-lg px-3 py-2 hover:bg-white/60"
                             onClick={() => { setSelectedId(open.id); setOpen(null) }}
                         >
                             Selecionar esta flor
@@ -230,6 +238,64 @@ export default function UIPage() {
             )}
         </div>
     )
+}
+
+/* ========= NOVO: mural de notícias ========= */
+function NewsWall() {
+    const [items, setItems] = useState<{title:string;link:string;date:string;source:string}[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        let alive = true
+        fetch('/api/news', { cache: 'no-store' })
+            .then(r => r.json())
+            .then((d) => { if (alive && Array.isArray(d.items)) setItems(d.items) })
+            .finally(() => alive && setLoading(false))
+        return () => { alive = false }
+    }, [])
+
+    return (
+        <section className="mt-2">
+            <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-lg font-semibold">Notícias recentes sobre Biologia</h2>
+                <a
+                    className="text-[13px] underline decoration-amber-500/60 hover:opacity-80"
+                    href="https://www.google.com/search?q=plants+botany+flowers&tbm=nws"
+                    target="_blank" rel="noopener noreferrer"
+                >
+                    ver mais
+                </a>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+                {(loading ? Array.from({length:4}).map((_,i)=>(
+                    <div key={i} className="glass glass-hairline glass-noise rounded-2xl p-4 animate-pulse">
+                        <div className="h-4 w-1/2 bg-black/10 rounded mb-2" />
+                        <div className="h-3 w-2/3 bg-black/10 rounded" />
+                    </div>
+                )) : items.map((n, i) => (
+                    <a
+                        key={i}
+                        href={n.link}
+                        target="_blank" rel="noopener noreferrer"
+                        className="glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition block"
+                    >
+                        <div className="text-xs opacity-70 mb-1">
+                            <b>{new URL(n.link).hostname.replace('www.','')}</b> • {timeAgo(n.date)}
+                        </div>
+                        <div className="font-medium leading-snug">{n.title}</div>
+                    </a>
+                )))}
+            </div>
+        </section>
+    )
+}
+
+function timeAgo(iso: string) {
+    const t = Date.parse(iso); const diff = Math.max(0, Date.now() - t)
+    const d = Math.floor(diff/864e5); if (d>0) return `${d} dia${d>1?'s':''} atrás`
+    const h = Math.floor(diff/36e5); if (h>0) return `${h} h atrás`
+    const m = Math.floor(diff/6e4);  return `${m||0} min atrás`
 }
 
 /* ------- auxiliares ------- */
@@ -245,9 +311,9 @@ function GlassCard({ title, subtitle, children }:{
 }) {
     return (
         <div className="glass glass-hairline glass-noise rounded-2xl p-4">
-            {subtitle && <div className="text-sm text-slate-600 dark:text-slate-300">{subtitle}</div>}
-            <div className="font-semibold text-slate-900 dark:text-white mb-2">{title}</div>
-            <div className="text-slate-800 dark:text-slate-200">{children}</div>
+            {subtitle && <div className="text-sm opacity-70">{subtitle}</div>}
+            <div className="font-semibold mb-2">{title}</div>
+            <div>{children}</div>
         </div>
     )
 }
@@ -257,14 +323,14 @@ function Slider({ label, value, onChange, icon }:{
 }) {
     return (
         <label className="block">
-            <div className="mb-2 font-medium flex items-center gap-2 text-slate-900 dark:text-white">
-                {icon} {label}: <span className="text-slate-600 dark:text-slate-300">{value}%</span>
+            <div className="mb-2 font-medium flex items-center gap-2">
+                {icon} {label}: <span className="opacity-70">{value}%</span>
             </div>
             <div className="glass glass-hairline glass-noise rounded-xl p-3">
                 <input
                     type="range" min={0} max={100} value={value}
                     onChange={(e)=>onChange(Number(e.target.value))}
-                    className="w-full accent-[#FFB700]"  /* <- amarelo novo no slider */
+                    className="w-full accent-amber-500"
                     aria-valuemin={0} aria-valuemax={100} aria-valuenow={value} aria-label={label}
                 />
             </div>
@@ -281,13 +347,13 @@ function Modal({ title, subtitle, onClose, children }:{
             role="dialog" aria-modal="true" aria-labelledby="modal-title"
             onClick={(e)=>{ if (e.target === e.currentTarget) onClose() }}
         >
-            <div className="absolute inset-0 bg-black/20 dark:bg-black/40" />
+            <div className="absolute inset-0 bg-black/20" />
             <div className="relative glass glass-hairline glass-noise rounded-3xl p-5 w-[min(620px,92vw)]">
                 <div className="flex items-start gap-2">
-                    <div className="text-lg font-semibold text-slate-900 dark:text-white" id="modal-title">{title}</div>
-                    <button onClick={onClose} className="ml-auto rounded-lg px-2 py-1 hover:bg-white/40 dark:hover:bg-white/10">✕</button>
+                    <div className="text-lg font-semibold" id="modal-title">{title}</div>
+                    <button onClick={onClose} className="ml-auto rounded-lg px-2 py-1 hover:bg-white/40">✕</button>
                 </div>
-                {subtitle && <div className="text-sm italic text-slate-600 dark:text-slate-300 mb-3">{subtitle}</div>}
+                {subtitle && <div className="text-sm italic opacity-70 mb-3">{subtitle}</div>}
                 <div>{children}</div>
             </div>
         </div>
