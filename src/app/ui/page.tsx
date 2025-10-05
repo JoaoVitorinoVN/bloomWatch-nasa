@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import GlassHeader, { TabKey } from '@/components/GlassHeader'
 import FlowerHero, { FlowerTheme } from '@/components/FlowerHero'
 import BloomBadge from '@/components/BloomBadge' // contador/prev de floração
+import Footer from '@/components/Footer'
 
 type FlowerRec = {
     id: string
@@ -74,13 +75,7 @@ export default function UIPage() {
 
     return (
         <div
-            className="
-        min-h-dvh relative
-        bg-gradient-to-br
-        from-[rgba(253,248,232,1)] via-[rgba(232,170,80,0.16)] to-[rgba(210,126,0,0.22)]
-        text-[#402613]
-
-      "
+            className="min-h-dvh relative text-[#402613]"
         >
             <div className="bg-bokeh" aria-hidden />
             <GlassHeader active={tab} onChange={setTab} />
@@ -126,11 +121,10 @@ export default function UIPage() {
                                         key={f.id}
                                         onClick={() => setSelectedId(f.id)}
                                         title={`${f.common} (${f.sci})`}
-                                        className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
-                                            active
+                                        className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${active
                                                 ? 'ring-2 ring-amber-400 bg-white/60'
                                                 : 'hover:bg-white/40'
-                                        }`}
+                                            }`}
                                         aria-pressed={active}
                                     >
                                         <span className="text-2xl">{f.emoji}</span>
@@ -203,8 +197,8 @@ export default function UIPage() {
                                             </div>
                                         </div>
                                         <div className="mt-2 text-sm">
-                                            <b>Bioma:</b> {f.biome}<br/>
-                                            <b>Fenologia:</b> {f.season}<br/>
+                                            <b>Bioma:</b> {f.biome}<br />
+                                            <b>Fenologia:</b> {f.season}<br />
                                             {f.summary}
                                         </div>
                                     </button>
@@ -216,12 +210,12 @@ export default function UIPage() {
 
                 {/* Polinização / Ciclo – mantenha como já está (se houver) */}
             </main>
-
+            
             {/* Modal de detalhes */}
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
                     <p>
-                        <b>Bioma:</b> {open.biome}<br/>
+                        <b>Bioma:</b> {open.biome}<br />
                         <b>Fenologia:</b> {open.season}
                     </p>
                     <p className="mt-2 opacity-80">{open.summary}</p>
@@ -236,13 +230,14 @@ export default function UIPage() {
                     </div>
                 </Modal>
             )}
+            <Footer/>
         </div>
     )
 }
 
 /* ========= NOVO: mural de notícias ========= */
 function NewsWall() {
-    const [items, setItems] = useState<{title:string;link:string;date:string;source:string}[]>([])
+    const [items, setItems] = useState<{ title: string; link: string; date: string; source: string }[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -268,7 +263,7 @@ function NewsWall() {
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
-                {(loading ? Array.from({length:4}).map((_,i)=>(
+                {(loading ? Array.from({ length: 4 }).map((_, i) => (
                     <div key={i} className="glass glass-hairline glass-noise rounded-2xl p-4 animate-pulse">
                         <div className="h-4 w-1/2 bg-black/10 rounded mb-2" />
                         <div className="h-3 w-2/3 bg-black/10 rounded" />
@@ -281,7 +276,7 @@ function NewsWall() {
                         className="glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition block"
                     >
                         <div className="text-xs opacity-70 mb-1">
-                            <b>{new URL(n.link).hostname.replace('www.','')}</b> • {timeAgo(n.date)}
+                            <b>{new URL(n.link).hostname.replace('www.', '')}</b> • {timeAgo(n.date)}
                         </div>
                         <div className="font-medium leading-snug">{n.title}</div>
                     </a>
@@ -293,9 +288,9 @@ function NewsWall() {
 
 function timeAgo(iso: string) {
     const t = Date.parse(iso); const diff = Math.max(0, Date.now() - t)
-    const d = Math.floor(diff/864e5); if (d>0) return `${d} dia${d>1?'s':''} atrás`
-    const h = Math.floor(diff/36e5); if (h>0) return `${h} h atrás`
-    const m = Math.floor(diff/6e4);  return `${m||0} min atrás`
+    const d = Math.floor(diff / 864e5); if (d > 0) return `${d} dia${d > 1 ? 's' : ''} atrás`
+    const h = Math.floor(diff / 36e5); if (h > 0) return `${h} h atrás`
+    const m = Math.floor(diff / 6e4); return `${m || 0} min atrás`
 }
 
 /* ------- auxiliares ------- */
@@ -306,7 +301,7 @@ function desc(v: number) {
     return 'alto'
 }
 
-function GlassCard({ title, subtitle, children }:{
+function GlassCard({ title, subtitle, children }: {
     title: string; subtitle?: string; children: React.ReactNode
 }) {
     return (
@@ -318,8 +313,8 @@ function GlassCard({ title, subtitle, children }:{
     )
 }
 
-function Slider({ label, value, onChange, icon }:{
-    label: string; value: number; onChange: (v:number)=>void; icon: string
+function Slider({ label, value, onChange, icon }: {
+    label: string; value: number; onChange: (v: number) => void; icon: string
 }) {
     return (
         <label className="block">
@@ -329,7 +324,7 @@ function Slider({ label, value, onChange, icon }:{
             <div className="glass glass-hairline glass-noise rounded-xl p-3">
                 <input
                     type="range" min={0} max={100} value={value}
-                    onChange={(e)=>onChange(Number(e.target.value))}
+                    onChange={(e) => onChange(Number(e.target.value))}
                     className="w-full accent-amber-500"
                     aria-valuemin={0} aria-valuemax={100} aria-valuenow={value} aria-label={label}
                 />
@@ -338,14 +333,14 @@ function Slider({ label, value, onChange, icon }:{
     )
 }
 
-function Modal({ title, subtitle, onClose, children }:{
-    title: string; subtitle?: string; onClose: ()=>void; children: React.ReactNode
+function Modal({ title, subtitle, onClose, children }: {
+    title: string; subtitle?: string; onClose: () => void; children: React.ReactNode
 }) {
     return (
         <div
             className="fixed inset-0 z-[6000] grid place-items-center p-4"
             role="dialog" aria-modal="true" aria-labelledby="modal-title"
-            onClick={(e)=>{ if (e.target === e.currentTarget) onClose() }}
+            onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
         >
             <div className="absolute inset-0 bg-black/20" />
             <div className="relative glass glass-hairline glass-noise rounded-3xl p-5 w-[min(620px,92vw)]">

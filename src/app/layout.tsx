@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lexend_Deca, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 const lexendDeca = Lexend_Deca({
   variable: "--font-lexend-deca",
@@ -25,8 +26,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${lexendDeca.variable} ${robotoMono.variable} antialiased`}
-      >
-        {children}
+      > 
+        {children}       
       </body>
     </html>
   );

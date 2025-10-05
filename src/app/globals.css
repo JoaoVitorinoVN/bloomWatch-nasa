@@ -107,8 +107,11 @@ body {
 
         /* <<< AQUI: cor única no lugar dos radial-gradients */
 
-        background: #FE9500;
-        background: linear-gradient(90deg,rgba(254, 149, 0, 1) 0%, rgba(253, 248, 232, 1) 0%, rgba(255, 203, 71, 1) 30%, rgba(255, 183, 0, 1) 100%);
+        /* background: #FE9500; */
+        /* background: linear-gradient(90deg,rgba(254, 149, 0, 1) 0%, rgba(253, 248, 232, 1) 0%, rgba(255, 203, 71, 1) 30%, rgba(255, 183, 0, 1) 100%); */
+        background-image: url(../../public/images/background.png);
+        background-size: cover;
+        background-position: center;
     }
     @media (prefers-reduced-motion: reduce){
         .bg-bokeh::before{ filter: blur(18px); }
