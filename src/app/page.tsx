@@ -1,37 +1,38 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import ActionButton from './components/ui/ActionButton'
+
 
 export default function Home() {
     const router = useRouter()
     return (
-        <main className="min-h-dvh grid place-items-center bg-gradient-to-br from-fuchsia-500 via-emerald-500 to-sky-500">
+        <main className='min-h-dvh grid place-items-center bg-[url("/png/folhasBackground.png")] bg-cover bg-center h-64'>
             <div className="backdrop-blur-md bg-white/10 text-white rounded-3xl p-8 shadow-2xl max-w-xl w-[92%]">
-                <h1 className="text-3xl font-bold mb-2">Flores do Brasil</h1>
-                <p className="opacity-90 mb-6">
-                    Descubra flores por estação e região — escolha como quer entrar:
+                <h1 className="text-3xl font-bold mb-2 text-center">BloomWatch</h1>
+                <p className="opacity-90 mb-6 text-center">
+                    A beleza da flora brasileira resumida em uma pequena tela.
                 </p>
 
-                <div className="grid gap-3">
-                    <button
-                        onClick={()=>router.push('/map?mode=geo')}
-                        className="w-full py-3 rounded-xl bg-white text-slate-900 font-semibold"
+                <div className="flex gap-3 transition-all">
+                    <ActionButton
+                        variant='default'
+                        onClick={() => router.push('/map?mode=geo')}
                     >
                         Usar minha localização
-                    </button>
+                    </ActionButton>
 
-                    <button
-                        onClick={()=>router.push('/map?mode=select')}
-                        className="w-full py-3 rounded-xl bg-white/90 text-slate-900 font-semibold"
+                    <ActionButton
+                        onClick={() => router.push('/map?mode=select')}
                     >
                         Escolher região no mapa
-                    </button>
+                    </ActionButton>
 
-                    <button
-                        onClick={()=>router.push('/map?mode=season')}
-                        className="w-full py-3 rounded-xl bg-black/30 text-white font-semibold border border-white/30"
+                    <ActionButton
+                        variant='dark'
+                        onClick={() => router.push('/map?mode=season')}
                     >
                         Explorar por estação
-                    </button>
+                    </ActionButton>
                 </div>
 
                 <p className="text-xs mt-6 opacity-80">
