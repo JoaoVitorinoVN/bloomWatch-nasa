@@ -12,25 +12,25 @@ export default function Home() {
                 <div className='max-w-3xl p-10'>
                     <h1 className="text-6xl font-medium mb-10">BloomWatch</h1>
                     <p className="opacity-90 mb-6">
-                        BloomWatch is a <b>interactive platform</b> dedicated to accompany the <b>process of blooming plants around Brazil</b>. Offering an <b>visual education experience</b> about the natural cycles and impact of climate changes for the flora.🌼
+                        BloomWatch é uma <b>plataforma interativa</b> dedicada a acompanhar e celebrar o <b>processo de floração das plantas ao redor do mundo</b>, com foco especial na biodiversidade do Brasil. Oferecendo uma <b>experiência visual e educativa</b> sobre os ciclos naturais e o impacto das mudanças climáticas na flora global. 🌼
                     </p>
                     <GlassButton
                         onClick={() => router.push('/ui')}
                         variant='dark'
                     >
-                        Start Exploring!
+                        Comece a explorar!
                     </GlassButton>
                 </div>
                 <div className="grid gap-3">
                     <h2 className="text-4xl font-medium mb-2">Candy Monkeys</h2>
                     <p className="opacity-70 mb-6">
-                        We just like banana flavoured candy
+                        Trabalhados com softwares.
                     </p>
                     <GlassButton
                         onClick={() => window.location.href = 'https://www.spaceappschallenge.org/2025/find-a-team/candy_monkeys/?tab=members'}
                         variant='dark'
                     >
-                        Meet us members!
+                        Conheça os membros!
                     </GlassButton>
                 </div>
 
