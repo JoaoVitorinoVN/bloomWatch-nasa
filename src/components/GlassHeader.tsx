@@ -8,10 +8,10 @@ export type TabKey = 'estacao' | 'clima' | 'polinizacao' | 'ciclo'
 type Props = { active: TabKey; onChangeAction: (k: TabKey) => void }
 
 const TABS: { key: TabKey; label: string; icon: JSX.Element }[] = [
-    { key: 'estacao',     label: 'Rotina',       icon: <span aria-hidden>☀️</span> },
-    { key: 'clima',       label: 'Clima',        icon: <span aria-hidden>🌧️</span> },
-    { key: 'polinizacao', label: 'Polinização',  icon: <span aria-hidden>🐝</span> },
-    { key: 'ciclo',       label: 'Ciclo',        icon: <span aria-hidden>🌱</span> },
+    { key: 'estacao',     label: 'Routine',       icon: <span aria-hidden>☀️</span> },
+    { key: 'clima',       label: 'Climate',        icon: <span aria-hidden>🌧️</span> },
+    { key: 'polinizacao', label: 'Polenization',  icon: <span aria-hidden>🐝</span> },
+    { key: 'ciclo',       label: 'Cicle',        icon: <span aria-hidden>🌱</span> },
 ]
 
 export default function GlassHeader({ active, onChangeAction }: Props) {
@@ -44,7 +44,7 @@ export default function GlassHeader({ active, onChangeAction }: Props) {
                  rounded-2xl glass glass-hairline glass-noise px-4 py-2"
         >
             <div className={`flex items-center gap-4 ${baseText}`}>
-                <div className="font-semibold">🌸 Flores do Brasil</div>
+                <div className="font-semibold"><a href="/">🐝 Bee Eyes</a></div>
 
                 <div ref={listRef} role="tablist" aria-label="Seções" className="flex gap-2 ml-2">
                     {TABS.map(({ key, label, icon }) => {
@@ -71,7 +71,7 @@ export default function GlassHeader({ active, onChangeAction }: Props) {
                 </div>
 
                 <div className={`ml-auto text-sm ${baseText}`}>
-                    Estação (HS): <b>{season}</b>
+                    Season: <b>{season}</b>
                 </div>
             </div>
         </header>
@@ -80,8 +80,8 @@ export default function GlassHeader({ active, onChangeAction }: Props) {
 
 function getSeasonHS(d = new Date()) {
     const m = d.getMonth() + 1
-    if (m === 12 || m <= 2) return 'Verão'
-    if (m <= 5) return 'Outono'
-    if (m <= 8) return 'Inverno'
-    return 'Primavera'
+    if (m === 12 || m <= 2) return 'Summer'
+    if (m <= 5) return 'Autumn'
+    if (m <= 8) return 'Winter'
+    return 'Spring'
 }

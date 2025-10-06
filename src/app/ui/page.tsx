@@ -46,7 +46,7 @@ const saveNotes = (list: NoteRec[]) => localStorage.setItem(LS_KEY, JSON.stringi
 const FALLBACK: FlowerRec[] = [
     {
         id: 'ipe-amarelo',
-        common: 'Ipê-amarelo',
+        common: 'Yellow Ipê',
         sci: 'Handroanthus chrysotrichus',
         emoji: '💛',
         biome: '',
@@ -137,7 +137,7 @@ export default function UIPage() {
         if (!noteTitle.trim() && !noteBody.trim()) return
         const rec: NoteRec = {
             id: crypto.randomUUID(),
-            title: noteTitle.trim() || '(sem título)',
+            title: noteTitle.trim() || '(untitled)',
             body: noteBody.trim(),
             flowerId: selected?.id ?? '',
             flowerName: selected?.common ?? '—',
@@ -163,20 +163,20 @@ export default function UIPage() {
                 {/* === Rotina (Estação) === */}
                 {tab === 'estacao' && (
                     <section className="grid gap-4">
-                        <h1 className="text-2xl font-semibold tracking-tight">Estação &amp; Humor</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">Season &amp; Mood</h1>
                         <p className="opacity-80">
-                            Bem-vindo(a)! Aqui você vê destaques por estação e recomendações de cuidado.
+                            Welcome! Here you see seasonal highlights and care recommendations.
                         </p>
 
                         <div className="grid sm:grid-cols-3 gap-3">
-                            <GlassCard title="Destaque da estação" subtitle="Primavera">
-                                🌼 Pico de floração para espécies ornamentais — regas moderadas.
+                            <GlassCard title="Season highlight" subtitle="Spring">
+                                🌼 Peak flowering for ornamental species — moderate watering.
                             </GlassCard>
-                            <GlassCard title="Cuidados rápidos" subtitle="Hoje">
-                                ☀️ Sol: <b>{desc(sun)}</b> · 💧 Água: <b>{desc(rain)}</b> · 🌬️ Vento: <b>{desc(wind)}</b>
+                            <GlassCard title="Quick care tips" subtitle="Today">
+                                ☀️ Sun: <b>{desc(sun)}</b> · 💧 Water: <b>{desc(rain)}</b> · 🌬️ Wind: <b>{desc(wind)}</b>
                             </GlassCard>
-                            <GlassCard title="Sugestão de espécie" subtitle="Fácil de cuidar">
-                                🌺 <b>Hibiscus rosa-sinensis</b> — florece bem com sol filtrado.
+                            <GlassCard title="Species suggestion" subtitle="Easy to care for">
+                                🌺 <b>Hibiscus rosa-sinensis</b> — blooms well with filtered sunlight.
                             </GlassCard>
                         </div>
 
@@ -209,7 +209,7 @@ export default function UIPage() {
                             <div className="ml-2 text-sm self-center opacity-80">
                                 {selected ? (
                                     <>
-                                        Flor atual: <b>{selected.common}</b>
+                                        Current flower: <b>{selected.common}</b>
                                     </>
                                 ) : (
                                     '—'
@@ -220,12 +220,12 @@ export default function UIPage() {
                         <div className="grid gap-8 md:grid-cols-[1fr_420px]">
                             {/* controles */}
                             <div className="glass glass-hairline glass-noise rounded-3xl p-5">
-                                <h2 className="text-xl font-semibold mb-2">Clima &amp; Controles</h2>
-                                <p className="opacity-80 mb-6">Ajuste condições e veja a flor reagir.</p>
+                                <h2 className="text-xl font-semibold mb-2">Climate &amp; Controls</h2>
+                                <p className="opacity-80 mb-6">Adjust conditions and watch the flower react.</p>
                                 <div className="space-y-6">
-                                    <Slider label="Luz solar" value={sun} onChange={setSun} icon="☀️" />
-                                    <Slider label="Chuva/rega" value={rain} onChange={setRain} icon="💧" />
-                                    <Slider label="Vento" value={wind} onChange={setWind} icon="🌬️" />
+                                    <Slider label="Sunlight" value={sun} onChange={setSun} icon="☀️" />
+                                    <Slider label="Rain/watering" value={rain} onChange={setRain} icon="💧" />
+                                    <Slider label="Wind" value={wind} onChange={setWind} icon="🌬️" />
                                 </div>
                             </div>
 
@@ -235,17 +235,17 @@ export default function UIPage() {
                                     {selected?.id && <BloomBadge flowerId={selected.id} />}
                                 </div>
 
-                                <h3 className="font-semibold mb-1">{selected?.common ?? 'Flor'}</h3>
+                                <h3 className="font-semibold mb-1">{selected?.common ?? 'Flower'}</h3>
                                 <div className="text-xs italic opacity-70 mb-2">{selected?.sci}</div>
                                 <ul className="list-disc pl-5 space-y-1">
                                     <li>
-                                        Sol: <b>{desc(sun)}</b> — evite queimar pétalas ao passar de 80%.
+                                        Sun: <b>{desc(sun)}</b> — avoid burning petals when exceeding 80%.
                                     </li>
                                     <li>
-                                        Água: <b>{desc(rain)}</b> — drenagem leve em &gt; 60%.
+                                        Water: <b>{desc(rain)}</b> — light drainage at &gt; 60%.
                                     </li>
                                     <li>
-                                        Vento: <b>{desc(wind)}</b> — tutor leve se for &gt; 50%.
+                                        Wind: <b>{desc(wind)}</b> — light support if &gt; 50%.
                                     </li>
                                 </ul>
                                 <div className="mt-6 flex items-center justify-center">
@@ -265,7 +265,7 @@ export default function UIPage() {
 
                         {/* lista de flores */}
                         <div className="space-y-2">
-                            <h2 className="text-lg font-semibold">Flores do Brasil</h2>
+                            <h2 className="text-lg font-semibold">Brazilian Flowers</h2>
                             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {flowers.map((f) => (
                                     <button
@@ -288,9 +288,9 @@ export default function UIPage() {
                                             </div>
                                         </div>
                                         <div className="mt-2 text-sm">
-                                            <b>Bioma:</b> {f.biome}
+                                            <b>Biome:</b> {f.biome}
                                             <br />
-                                            <b>Fenologia:</b> {f.season}
+                                            <b>Phenology:</b> {f.season}
                                             <br />
                                             {f.summary}
                                         </div>
@@ -328,10 +328,10 @@ export default function UIPage() {
                         {/* direita: cartões */}
                         <div className="grid gap-4">
                             <div className="glass glass-hairline glass-noise rounded-2xl p-5">
-                                <h3 className="font-semibold mb-2">Terreno adequado</h3>
+                                <h3 className="font-semibold mb-2">Suitable soil</h3>
                                 <dl className="grid sm:grid-cols-2 gap-2 text-sm">
                                     <div>
-                                        <dt className="opacity-80">pH ideal</dt>
+                                        <dt className="opacity-80">Ideal pH</dt>
                                         <dd>
                                             <Meter
                                                 value={(poly.soil.phMin + poly.soil.phMax) / 2}
@@ -342,19 +342,19 @@ export default function UIPage() {
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="opacity-80">Textura</dt>
+                                        <dt className="opacity-80">Texture</dt>
                                         <dd>
                                             <Chip>{poly.soil.texture}</Chip>
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="opacity-80">Drenagem</dt>
+                                        <dt className="opacity-80">Drainage</dt>
                                         <dd>
                                             <Chip>{poly.soil.drainage}</Chip>
                                         </dd>
                                     </div>
                                     <div>
-                                        <dt className="opacity-80">Luz</dt>
+                                        <dt className="opacity-80">Light</dt>
                                         <dd>
                                             <Chip>{poly.soil.light}</Chip>
                                         </dd>
@@ -363,13 +363,13 @@ export default function UIPage() {
                             </div>
 
                             <div className="glass glass-hairline glass-noise rounded-2xl p-5">
-                                <h3 className="font-semibold mb-2">Polinizadores</h3>
+                                <h3 className="font-semibold mb-2">Pollinators</h3>
                                 <div className="flex flex-wrap gap-2 text-sm">
                                     {poly.likelyPollinators.map((p) => (
                                         <Chip key={p}>
                                             {p === 'abelhas' && '🐝 '}
                                             {p === 'borboletas' && '🦋 '}
-                                            {p === 'beija-flores' && '🐦‍⬛ '}
+                                            {p === 'beija-flores' && '🦜‍⬛ '}
                                             {p === 'morcegos' && '🦇 '}
                                             {p === 'moscas' && '🪰 '}
                                             {p}
@@ -379,11 +379,11 @@ export default function UIPage() {
                             </div>
 
                             <div className="glass glass-hairline glass-noise rounded-2xl p-5">
-                                <h3 className="font-semibold mb-1">Tempo de crescimento</h3>
+                                <h3 className="font-semibold mb-1">Growth time</h3>
                                 <p className="text-sm opacity-80 mb-3">
-                                    Estimativa {poly.totalDaysToBloom} dias (semente → floração).
+                                    Estimated {poly.totalDaysToBloom} days (seed → flowering).
                                     {typeof daysUntil === 'number' && (
-                                        <> Próx. floração em <b>{daysUntil}d</b>.</>
+                                        <> Next bloom in <b>{daysUntil}d</b>.</>
                                     )}
                                 </p>
                                 <div className="overflow-x-auto">
@@ -399,31 +399,31 @@ export default function UIPage() {
                     <section className="grid gap-4">
                         {/* Formulário */}
                         <div className="glass glass-hairline glass-noise rounded-3xl p-5">
-                            <h2 className="text-xl font-semibold mb-1">Anotações do ciclo</h2>
+                            <h2 className="text-xl font-semibold mb-1">Cycle notes</h2>
                             <p className="text-sm opacity-80 mb-4">
-                                Registre eventos do cultivo. A nota é carimbada com a <b>flor atual</b> e o número de
-                                <b> dias restantes</b> para a próxima floração.
+                                Record cultivation events. The note is stamped with the <b>current flower</b> and the number of
+                                <b> days remaining</b> until next bloom.
                             </p>
 
                             <label className="block mb-3">
-                                <div className="text-sm mb-1">Título</div>
+                                <div className="text-sm mb-1">Title</div>
                                 <input
                                     value={noteTitle}
                                     onChange={(e) => setNoteTitle(e.target.value)}
                                     onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
-                                    placeholder="Ex.: Rega reforçada / transplante / adubação"
+                                    placeholder="E.g.: Reinforced watering / transplant / fertilization"
                                     className="w-full rounded-xl px-3 py-2 glass glass-hairline"
                                 />
                             </label>
 
                             <label className="block">
-                                <div className="text-sm mb-1">Descrição</div>
+                                <div className="text-sm mb-1">Description</div>
                                 <textarea
                                     value={noteBody}
                                     onChange={(e) => setNoteBody(e.target.value)}
                                     onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
                                     rows={4}
-                                    placeholder="Detalhes do que foi feito/observado… (Envie com Ctrl/⌘+Enter)"
+                                    placeholder="Details of what was done/observed… (Submit with Ctrl/⌘+Enter)"
                                     className="w-full rounded-xl px-3 py-2 glass glass-hairline"
                                 />
                             </label>
@@ -433,10 +433,10 @@ export default function UIPage() {
                                     onClick={handleSubmit}
                                     className="px-3 py-2 rounded-lg glass glass-hairline hover:bg-white/60"
                                 >
-                                    Salvar nota
+                                    Save note
                                 </button>
                                 <div className="text-sm opacity-70">
-                                    Flor atual: <b>{selected?.common}</b> • Próx. floração:{' '}
+                                    Current flower: <b>{selected?.common}</b> • Next bloom:{' '}
                                     <b>{daysUntil == null ? '—' : daysUntil === 0 ? '0d' : `${daysUntil}d`}</b>
                                 </div>
                             </div>
@@ -446,7 +446,7 @@ export default function UIPage() {
                         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                             {notes.length === 0 ? (
                                 <div className="glass glass-hairline glass-noise rounded-2xl p-4 text-sm opacity-80">
-                                    Nenhuma anotação ainda. Escreva um título/descrição acima e salve para criar seu primeiro
+                                    No notes yet. Write a title/description above and save to create your first
                                     card.
                                 </div>
                             ) : (
@@ -456,8 +456,8 @@ export default function UIPage() {
                                         n.daysAtCreation == null
                                             ? '—'
                                             : n.daysAtCreation === 0
-                                                ? 'em floração'
-                                                : `faltam ${n.daysAtCreation}d`
+                                                ? 'in bloom'
+                                                : `${n.daysAtCreation}d left`
 
                                     const progress =
                                         n.daysAtCreation == null
@@ -513,7 +513,7 @@ export default function UIPage() {
                                                     onClick={() => removeNote(n.id)}
                                                     className="px-2 py-1 rounded-lg glass glass-hairline hover:bg-white/60 text-sm"
                                                 >
-                                                    Apagar
+                                                    Delete
                                                 </button>
                                             </div>
                                         </article>
@@ -529,9 +529,9 @@ export default function UIPage() {
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
                     <p>
-                        <b>Bioma:</b> {open.biome}
+                        <b>Biome:</b> {open.biome}
                         <br />
-                        <b>Fenologia:</b> {open.season}
+                        <b>Phenology:</b> {open.season}
                     </p>
                     <p className="mt-2 opacity-80">{open.summary}</p>
 
@@ -543,7 +543,7 @@ export default function UIPage() {
                                 setOpen(null)
                             }}
                         >
-                            Selecionar esta flor
+                            Select this flower
                         </button>
                     </div>
                 </Modal>
@@ -577,14 +577,14 @@ function NewsWall() {
     return (
         <section className="mt-2">
             <div className="mb-2 flex items-center justify-between">
-                <h2 className="text-lg font-semibold">Notícias recentes sobre Biologia</h2>
+                <h2 className="text-lg font-semibold">Recent news about Biology</h2>
                 <a
                     className="text-[13px] underline decoration-amber-500/60 hover:opacity-80"
                     href="https://www.google.com/search?q=plants+botany+flowers&tbm=nws"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    ver mais
+                    see more
                 </a>
             </div>
 
@@ -619,18 +619,18 @@ function timeAgo(iso: string) {
     const t = Date.parse(iso)
     const diff = Math.max(0, Date.now() - t)
     const d = Math.floor(diff / 864e5)
-    if (d > 0) return `${d} dia${d > 1 ? 's' : ''} atrás`
+    if (d > 0) return `${d} day${d > 1 ? 's' : ''} ago`
     const h = Math.floor(diff / 36e5)
-    if (h > 0) return `${h} h atrás`
+    if (h > 0) return `${h} h ago`
     const m = Math.floor(diff / 6e4)
-    return `${m || 0} min atrás`
+    return `${m || 0} min ago`
 }
 
 /* ------- auxiliares ------- */
 function desc(v: number) {
-    if (v < 25) return 'baixo'
-    if (v < 60) return 'médio'
-    return 'alto'
+    if (v < 25) return 'low'
+    if (v < 60) return 'medium'
+    return 'high'
 }
 
 function GlassCard({

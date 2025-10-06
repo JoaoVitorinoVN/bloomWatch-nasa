@@ -42,20 +42,20 @@ export default function BloomBadge({ flowerId, lat, lng, className = '' }: Props
 
     if (loading) {
         return (
-            <span className={cls} title="calculando…">
+            <span className={cls} title="calculating...">
         <SpinnerDot /> …
       </span>
         );
     }
     if (days == null) {
-        return <span className={cls}>sem previsão</span>;
+        return <span className={cls}>No prediction</span>;
     }
 
     return (
         <span
             className={cls}
             title={
-                src === 'inat' ? 'Previsto por iNaturalist' : src === 'season' ? 'Estimado pela estação' : ''
+                src === 'inat' ? 'Predicted by iNaturalist' : src === 'season' ? 'Estimated by the station' : ''
             }
         >
       {/* anel de progresso em AZUL */}
@@ -82,7 +82,7 @@ export default function BloomBadge({ flowerId, lat, lng, className = '' }: Props
           </linearGradient>
         </defs>
       </svg>
-            {days === 0 ? 'em floração' : `faltam ${days} dia${days === 1 ? '' : 's'}`}
+            {days === 0 ? 'blooming' : `${days} day${days === 1 ? '' : 's'} left`}
     </span>
     );
 }
