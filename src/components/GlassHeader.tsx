@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link';
 import { JSX, useEffect, useId, useRef, useState } from 'react'
 
 export type TabKey = 'estacao' | 'clima' | 'polinizacao' | 'ciclo'
@@ -44,7 +45,7 @@ export default function GlassHeader({ active, onChangeAction }: Props) {
                  rounded-2xl glass glass-hairline glass-noise px-4 py-2"
         >
             <div className={`flex items-center gap-4 ${baseText}`}>
-                <div className="font-semibold"><a href="/">🐝 Bee Eyes</a></div>
+                <div className="font-semibold"><Link href={'/'}>🐝 Bee Eyes</Link></div>
 
                 <div ref={listRef} role="tablist" aria-label="Seções" className="flex gap-2 ml-2">
                     {TABS.map(({ key, label, icon }) => {
