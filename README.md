@@ -1,3 +1,20 @@
+# Bee Eyes
+
+Did you know? Bees can feel electric fields to know when flowers will eventually bloom so they can start the polinization cycle. It's crucial to identify the best flowers and visit them for nectar.
+
+Well... us?
+Most people may not know much things about plants.
+When to they bloom? When will they give fruits? 
+It's a fact that most people know they grow better in certain places, but what if I give you a certain name and ask you *where*?
+Well, nice to meet you, this is bloomwatch.
+
+We've chosen to build a Project to monitor plant behaviour, statuses and conditions, so you can personally sharpen your green touch!
+Know what plants feel more comfortable in your area in this educational interface and accompany them through visual gamified simulations with little to no difficulties.
+
+Well, sounds convenient enough, don't you think? Be like a bee, use your Bee eyes.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
