@@ -12,9 +12,9 @@ export default function Home() {
             <main className="min-h-dvh grid place-items-center bg-[url('/images/background.png')] bg-cover bg-center">
                 <div className="border-white/20 border backdrop-blur-md bg-white/10 rounded-3xl p-8 shadow-2xl w-[92%] text-yellow-950 flex justify-around items-center">
                     <div className="max-w-3xl p-10">
-                        <h1 className="text-6xl font-medium mb-10">BloomWatch</h1>
+                        <h1 className="text-6xl font-medium mb-10">Bee Eyes</h1>
                         <p className="opacity-90 mb-6">
-                            BloomWatch is a <b>interactive platform</b> dedicated to accompany the <b>process of blooming plants around Brazil</b>. Offering an <b>visual education experience</b> about the natural cycles and impact of climate changes for the flora.🌼
+                            Bee Eyes is a <b>interactive platform</b> dedicated to accompany the <b>process of blooming plants around Brazil</b>. Offering an <b>visual education experience</b> about the natural cycles and impact of climate changes for the flora.🌼
                         </p>
                         <GlassButton onClick={() => router.push('/ui')} variant="dark">
                             Start Exploring!
