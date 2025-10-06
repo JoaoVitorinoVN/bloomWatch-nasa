@@ -4,7 +4,8 @@ import { JSX, useEffect, useId, useRef, useState } from 'react'
 
 export type TabKey = 'estacao' | 'clima' | 'polinizacao' | 'ciclo'
 
-type Props = { active: TabKey; onChange: (k: TabKey) => void }
+// ⬇️ Renomeada para onChangeAction
+type Props = { active: TabKey; onChangeAction: (k: TabKey) => void }
 
 const TABS: { key: TabKey; label: string; icon: JSX.Element }[] = [
     { key: 'estacao',     label: 'Rotina',       icon: <span aria-hidden>☀️</span> },
@@ -13,14 +14,13 @@ const TABS: { key: TabKey; label: string; icon: JSX.Element }[] = [
     { key: 'ciclo',       label: 'Ciclo',        icon: <span aria-hidden>🌱</span> },
 ]
 
-export default function GlassHeader({ active, onChange }: Props) {
+export default function GlassHeader({ active, onChangeAction }: Props) {
     const id = useId()
     const listRef = useRef<HTMLDivElement>(null)
-    const [season, setSeason] = useState<string>('—') // evita mismatch no SSR
+    const [season, setSeason] = useState<string>('—')
 
     useEffect(() => { setSeason(getSeasonHS()) }, [])
 
-    // navegação por teclado (APG Tabs – manual activation)
     useEffect(() => {
         const el = listRef.current; if (!el) return
         function onKey(e: KeyboardEvent) {
@@ -28,13 +28,14 @@ export default function GlassHeader({ active, onChange }: Props) {
             e.preventDefault()
             const order = TABS.map(t => t.key)
             const i = order.indexOf(active)
-            onChange(order[e.key === 'ArrowRight' ? (i + 1) % order.length : (i - 1 + order.length) % order.length])
+            onChangeAction(order[e.key === 'ArrowRight'
+                ? (i + 1) % order.length
+                : (i - 1 + order.length) % order.length])
         }
         el.addEventListener('keydown', onKey)
         return () => el.removeEventListener('keydown', onKey)
-    }, [active, onChange])
+    }, [active, onChangeAction])
 
-    // cor de texto base pedida
     const baseText = 'text-[#402613]'
 
     return (
@@ -56,7 +57,7 @@ export default function GlassHeader({ active, onChange }: Props) {
                                 aria-selected={selected}
                                 aria-controls={`${id}-panel-${key}`}
                                 tabIndex={selected ? 0 : -1}
-                                onClick={() => onChange(key)}
+                                onClick={() => onChangeAction(key)}
                                 className={`flex items-center gap-2 rounded-xl px-3 py-2 border transition
                   ${selected
                                     ? 'bg-white/80 border-white/70 shadow-sm'
