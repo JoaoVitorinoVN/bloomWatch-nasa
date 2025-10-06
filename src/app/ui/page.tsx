@@ -157,7 +157,7 @@ export default function UIPage() {
     return (
         <div className="min-h-dvh relative text-[#402613]">
             <div className="bg-bokeh" aria-hidden />
-            <GlassHeader active={tab} onChange={setTab} />
+            <GlassHeader active={tab} onChangeAction={setTab} />
 
             <main className="relative z-10 pt-28 pb-16 px-4 max-w-6xl mx-auto">
                 {/* === Rotina (Estação) === */}
