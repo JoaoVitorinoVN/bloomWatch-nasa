@@ -33,7 +33,11 @@ type NoteRec = {
 }
 const LS_KEY = 'bw_notes_v1'
 const loadNotes = (): NoteRec[] => {
-    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]') } catch { return [] }
+    try {
+        return JSON.parse(localStorage.getItem(LS_KEY) || '[]')
+    } catch {
+        return []
+    }
 }
 const saveNotes = (list: NoteRec[]) => localStorage.setItem(LS_KEY, JSON.stringify(list))
 
@@ -82,14 +86,15 @@ export default function UIPage() {
                     setSelectedId(arr[0].id)
                 }
             })
-            .catch(() => { /* mantém fallback */ })
-        return () => { alive = false }
+            .catch(() => {
+                /* mantém fallback */
+            })
+        return () => {
+            alive = false
+        }
     }, [])
 
-    const selected = useMemo(
-        () => flowers.find((f) => f.id === selectedId) ?? flowers[0],
-        [flowers, selectedId],
-    )
+    const selected = useMemo(() => flowers.find((f) => f.id === selectedId) ?? flowers[0], [flowers, selectedId])
     const theme = selected?.colors as FlowerTheme | undefined
     const petalCount = selected?.colors?.petalCount ?? 8
 
@@ -100,10 +105,16 @@ export default function UIPage() {
         let alive = true
         if (!selected?.id) return
         fetch(`/api/phenology?id=${encodeURIComponent(selected.id)}`)
-            .then(r => r.json())
-            .then(d => { if (alive) setDaysUntil(d?.nextBloom?.daysUntil ?? null) })
-            .catch(() => { if (alive) setDaysUntil(null) })
-        return () => { alive = false }
+            .then((r) => r.json())
+            .then((d) => {
+                if (alive) setDaysUntil(d?.nextBloom?.daysUntil ?? null)
+            })
+            .catch(() => {
+                if (alive) setDaysUntil(null)
+            })
+        return () => {
+            alive = false
+        }
     }, [selected?.id])
 
     // ===== Ciclo (anotações) =====
@@ -111,8 +122,12 @@ export default function UIPage() {
     const [noteTitle, setNoteTitle] = useState('')
     const [noteBody, setNoteBody] = useState('')
 
-    useEffect(() => { setNotes(loadNotes()) }, [])
-    useEffect(() => { saveNotes(notes) }, [notes])
+    useEffect(() => {
+        setNotes(loadNotes())
+    }, [])
+    useEffect(() => {
+        saveNotes(notes)
+    }, [notes])
 
     const addNote = () => {
         if (!noteTitle.trim() && !noteBody.trim()) return
@@ -126,11 +141,12 @@ export default function UIPage() {
             createdAt: new Date().toISOString(),
         }
         setNotes([rec, ...notes])
-        setNoteTitle(''); setNoteBody('')
+        setNoteTitle('')
+        setNoteBody('')
     }
-    const delNote = (id: string) => setNotes(notes.filter(n => n.id !== id))
+    const delNote = (id: string) => setNotes(notes.filter((n) => n.id !== id))
 
-    // 👇 correções mínimas para o seu JSX atual
+    // aliases usados no JSX
     const handleSubmit = addNote
     const removeNote = delNote
 
@@ -140,7 +156,6 @@ export default function UIPage() {
             <GlassHeader active={tab} onChange={setTab} />
 
             <main className="relative z-10 pt-28 pb-16 px-4 max-w-6xl mx-auto">
-
                 {/* === Rotina (Estação) === */}
                 {tab === 'estacao' && (
                     <section className="grid gap-4">
@@ -176,9 +191,8 @@ export default function UIPage() {
                                         key={f.id}
                                         onClick={() => setSelectedId(f.id)}
                                         title={`${f.common} (${f.sci})`}
-                                        className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${active
-                                            ? 'ring-2 ring-amber-400 bg-white/60'
-                                            : 'hover:bg-white/40'
+                                        className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
+                                            active ? 'ring-2 ring-amber-400 bg-white/60' : 'hover:bg-white/40'
                                         }`}
                                         aria-pressed={active}
                                     >
@@ -186,9 +200,7 @@ export default function UIPage() {
                                     </button>
                                 )
                             })}
-                            <div className="ml-2 text-sm self-center opacity-80">
-                                {selected ? <>Flor atual: <b>{selected.common}</b></> : '—'}
-                            </div>
+                            <div className="ml-2 text-sm self-center opacity-80">{selected ? <>Flor atual: <b>{selected.common}</b></> : '—'}</div>
                         </div>
 
                         <div className="grid gap-8 md:grid-cols-[1fr_420px]">
@@ -205,9 +217,7 @@ export default function UIPage() {
 
                             {/* aside */}
                             <aside className="glass glass-hairline glass-noise rounded-3xl p-5 relative">
-                                <div className="absolute top-3 right-3 select-none pointer-events-none">
-                                    {selected?.id && <BloomBadge flowerId={selected.id} />}
-                                </div>
+                                <div className="absolute top-3 right-3 select-none pointer-events-none">{selected?.id && <BloomBadge flowerId={selected.id} />}</div>
 
                                 <h3 className="font-semibold mb-1">{selected?.common ?? 'Flor'}</h3>
                                 <div className="text-xs italic opacity-70 mb-2">{selected?.sci}</div>
@@ -231,7 +241,10 @@ export default function UIPage() {
                                 {flowers.map((f) => (
                                     <button
                                         key={f.id}
-                                        onClick={() => { setSelectedId(f.id); setOpen(f) }}
+                                        onClick={() => {
+                                            setSelectedId(f.id)
+                                            setOpen(f)
+                                        }}
                                         className="relative text-left glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition"
                                     >
                                         <div className="absolute top-2 right-2 select-none pointer-events-none">
@@ -246,8 +259,10 @@ export default function UIPage() {
                                             </div>
                                         </div>
                                         <div className="mt-2 text-sm">
-                                            <b>Bioma:</b> {f.biome}<br />
-                                            <b>Fenologia:</b> {f.season}<br />
+                                            <b>Bioma:</b> {f.biome}
+                                            <br />
+                                            <b>Fenologia:</b> {f.season}
+                                            <br />
                                             {f.summary}
                                         </div>
                                     </button>
@@ -282,12 +297,7 @@ export default function UIPage() {
                                     <div>
                                         <dt className="opacity-80">pH ideal</dt>
                                         <dd>
-                                            <Meter
-                                                value={(poly.soil.phMin + poly.soil.phMax) / 2}
-                                                min={4}
-                                                max={8}
-                                                label={`${poly.soil.phMin.toFixed(1)}–${poly.soil.phMax.toFixed(1)}`}
-                                            />
+                                            <Meter value={(poly.soil.phMin + poly.soil.phMax) / 2} min={4} max={8} label={`${poly.soil.phMin.toFixed(1)}–${poly.soil.phMax.toFixed(1)}`} />
                                         </dd>
                                     </div>
                                     <div><dt className="opacity-80">Textura</dt><dd><Chip>{poly.soil.texture}</Chip></dd></div>
@@ -299,7 +309,7 @@ export default function UIPage() {
                             <div className="glass glass-hairline glass-noise rounded-2xl p-5">
                                 <h3 className="font-semibold mb-2">Polinizadores</h3>
                                 <div className="flex flex-wrap gap-2 text-sm">
-                                    {poly.likelyPollinators.map(p => (
+                                    {poly.likelyPollinators.map((p) => (
                                         <Chip key={p}>
                                             {p === 'abelhas' && '🐝 '}
                                             {p === 'borboletas' && '🦋 '}
@@ -333,8 +343,7 @@ export default function UIPage() {
                         <div className="glass glass-hairline glass-noise rounded-3xl p-5">
                             <h2 className="text-xl font-semibold mb-1">Anotações do ciclo</h2>
                             <p className="text-sm opacity-80 mb-4">
-                                Registre eventos do cultivo. A nota é carimbada com a <b>flor atual</b> e o número de
-                                <b> dias restantes</b> para a próxima floração.
+                                Registre eventos do cultivo. A nota é carimbada com a <b>flor atual</b> e o número de <b>dias restantes</b> para a próxima floração.
                             </p>
 
                             <label className="block mb-3">
@@ -342,7 +351,7 @@ export default function UIPage() {
                                 <input
                                     value={noteTitle}
                                     onChange={(e) => setNoteTitle(e.target.value)}
-                                    onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
+                                    onKeyDown={(e) => e.key === 'Enter' && (e.metaKey || e.ctrlKey) && handleSubmit()}
                                     placeholder="Ex.: Rega reforçada / transplante / adubação"
                                     className="w-full rounded-xl px-3 py-2 glass glass-hairline"
                                 />
@@ -353,7 +362,7 @@ export default function UIPage() {
                                 <textarea
                                     value={noteBody}
                                     onChange={(e) => setNoteBody(e.target.value)}
-                                    onKeyDown={(e) => (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) && handleSubmit()}
+                                    onKeyDown={(e) => e.key === 'Enter' && (e.metaKey || e.ctrlKey) && handleSubmit()}
                                     rows={4}
                                     placeholder="Detalhes do que foi feito/observado… (Envie com Ctrl/⌘+Enter)"
                                     className="w-full rounded-xl px-3 py-2 glass glass-hairline"
@@ -361,15 +370,11 @@ export default function UIPage() {
                             </label>
 
                             <div className="mt-4 flex items-center gap-3">
-                                <button
-                                    onClick={handleSubmit}
-                                    className="px-3 py-2 rounded-lg glass glass-hairline hover:bg-white/60"
-                                >
+                                <button onClick={handleSubmit} className="px-3 py-2 rounded-lg glass glass-hairline hover:bg-white/60">
                                     Salvar nota
                                 </button>
                                 <div className="text-sm opacity-70">
-                                    Flor atual: <b>{selected?.common}</b> • Próx. floração:{' '}
-                                    <b>{daysUntil == null ? '—' : daysUntil === 0 ? '0d' : `${daysUntil}d`}</b>
+                                    Flor atual: <b>{selected?.common}</b> • Próx. floração: <b>{daysUntil == null ? '—' : daysUntil === 0 ? '0d' : `${daysUntil}d`}</b>
                                 </div>
                             </div>
                         </div>
@@ -378,18 +383,13 @@ export default function UIPage() {
                         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                             {notes.length === 0 ? (
                                 <div className="glass glass-hairline glass-noise rounded-2xl p-4 text-sm opacity-80">
-                                    Nenhuma anotação ainda. Escreva um título/descrição acima e salve para criar seu primeiro
-                                    card.
+                                    Nenhuma anotação ainda. Escreva um título/descrição acima e salve para criar seu primeiro card.
                                 </div>
                             ) : (
                                 notes.map((n) => {
-                                    // calcula selo e progresso para o anel azul
+                                    // badge + progresso do anel azul
                                     const badgeText =
-                                        n.daysAtCreation == null
-                                            ? '—'
-                                            : n.daysAtCreation === 0
-                                                ? 'em floração'
-                                                : `faltam ${n.daysAtCreation}d`
+                                        n.daysAtCreation == null ? '—' : n.daysAtCreation === 0 ? 'em floração' : `faltam ${n.daysAtCreation}d`
 
                                     const progress =
                                         n.daysAtCreation == null
@@ -419,17 +419,12 @@ export default function UIPage() {
                         </span>
                                             </div>
 
-                                            <div className="text-xs opacity-70 mb-1">
-                                                {new Date(n.createdAt).toLocaleString()} • {n.flowerName}
-                                            </div>
+                                            <div className="text-xs opacity-70 mb-1">{new Date(n.createdAt).toLocaleString()} • {n.flowerName}</div>
                                             <h4 className="font-semibold mb-1 break-words">{n.title}</h4>
                                             {n.body && <p className="text-sm opacity-90 whitespace-pre-wrap break-words">{n.body}</p>}
 
                                             <div className="mt-3">
-                                                <button
-                                                    onClick={() => removeNote(n.id)}
-                                                    className="px-2 py-1 rounded-lg glass glass-hairline hover:bg-white/60 text-sm"
-                                                >
+                                                <button onClick={() => removeNote(n.id)} className="px-2 py-1 rounded-lg glass glass-hairline hover:bg-white/60 text-sm">
                                                     Apagar
                                                 </button>
                                             </div>
@@ -446,7 +441,8 @@ export default function UIPage() {
             {open && (
                 <Modal onClose={() => setOpen(null)} title={open.common} subtitle={open.sci}>
                     <p>
-                        <b>Bioma:</b> {open.biome}<br />
+                        <b>Bioma:</b> {open.biome}
+                        <br />
                         <b>Fenologia:</b> {open.season}
                     </p>
                     <p className="mt-2 opacity-80">{open.summary}</p>
@@ -454,7 +450,10 @@ export default function UIPage() {
                     <div className="mt-4 flex justify-end">
                         <button
                             className="glass glass-hairline rounded-lg px-3 py-2 hover:bg-white/60"
-                            onClick={() => { setSelectedId(open.id); setOpen(null) }}
+                            onClick={() => {
+                                setSelectedId(open.id)
+                                setOpen(null)
+                            }}
                         >
                             Selecionar esta flor
                         </button>
@@ -462,7 +461,7 @@ export default function UIPage() {
                 </Modal>
             )}
 
-            <Footer/>
+            <Footer />
         </div>
     )
 }
@@ -475,10 +474,14 @@ function NewsWall() {
     useEffect(() => {
         let alive = true
         fetch('/api/news', { cache: 'no-store' })
-            .then(r => r.json())
-            .then((d) => { if (alive && Array.isArray(d.items)) setItems(d.items) })
+            .then((r) => r.json())
+            .then((d) => {
+                if (alive && Array.isArray(d.items)) setItems(d.items)
+            })
             .finally(() => alive && setLoading(false))
-        return () => { alive = false }
+        return () => {
+            alive = false
+        }
     }, [])
 
     return (
@@ -488,49 +491,59 @@ function NewsWall() {
                 <a
                     className="text-[13px] underline decoration-amber-500/60 hover:opacity-80"
                     href="https://www.google.com/search?q=plants+botany+flowers&tbm=nws"
-                    target="_blank" rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     ver mais
                 </a>
             </div>
 
             <div className="grid gap-3 md:grid-cols-2">
-                {(loading ? Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="glass glass-hairline glass-noise rounded-2xl p-4 animate-pulse">
-                        <div className="h-4 w-1/2 bg-black/10 rounded mb-2" />
-                        <div className="h-3 w-2/3 bg-black/10 rounded" />
-                    </div>
-                )) : items.map((n, i) => (
-                    <a
-                        key={i}
-                        href={n.link}
-                        target="_blank" rel="noopener noreferrer"
-                        className="glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition block"
-                    >
-                        <div className="text-xs opacity-70 mb-1">
-                            <b>{new URL(n.link).hostname.replace('www.', '')}</b> • {timeAgo(n.date)}
+                {(loading
+                    ? Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="glass glass-hairline glass-noise rounded-2xl p-4 animate-pulse">
+                            <div className="h-4 w-1/2 bg-black/10 rounded mb-2" />
+                            <div className="h-3 w-2/3 bg-black/10 rounded" />
                         </div>
-                        <div className="font-medium leading-snug">{n.title}</div>
-                    </a>
-                )))}
+                    ))
+                    : items.map((n, i) => (
+                        <a
+                            key={i}
+                            href={n.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="glass glass-hairline glass-noise rounded-2xl p-4 hover:scale-[1.01] transition block"
+                        >
+                            <div className="text-xs opacity-70 mb-1">
+                                <b>{new URL(n.link).hostname.replace('www.', '')}</b> • {timeAgo(n.date)}
+                            </div>
+                            <div className="font-medium leading-snug">{n.title}</div>
+                        </a>
+                    )))}
             </div>
         </section>
     )
 }
 
 function timeAgo(iso: string) {
-    const t = Date.parse(iso); const diff = Math.max(0, Date.now() - t)
-    const d = Math.floor(diff / 864e5); if (d > 0) return `${d} dia${d > 1 ? 's' : ''} atrás`
-    const h = Math.floor(diff / 36e5); if (h > 0) return `${h} h atrás`
-    const m = Math.floor(diff / 6e4); return `${m || 0} min atrás`
+    const t = Date.parse(iso)
+    const diff = Math.max(0, Date.now() - t)
+    const d = Math.floor(diff / 864e5)
+    if (d > 0) return `${d} dia${d > 1 ? 's' : ''} atrás`
+    const h = Math.floor(diff / 36e5)
+    if (h > 0) return `${h} h atrás`
+    const m = Math.floor(diff / 6e4)
+    return `${m || 0} min atrás`
 }
 
 /* ------- auxiliares ------- */
-function desc(v: number) { if (v < 25) return 'baixo'; if (v < 60) return 'médio'; return 'alto' }
+function desc(v: number) {
+    if (v < 25) return 'baixo'
+    if (v < 60) return 'médio'
+    return 'alto'
+}
 
-function GlassCard({ title, subtitle, children }: {
-    title: string; subtitle?: string; children: React.ReactNode
-}) {
+function GlassCard({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
     return (
         <div className="glass glass-hairline glass-noise rounded-2xl p-4">
             {subtitle && <div className="text-sm opacity-70">{subtitle}</div>}
@@ -540,9 +553,7 @@ function GlassCard({ title, subtitle, children }: {
     )
 }
 
-function Slider({ label, value, onChange, icon }: {
-    label: string; value: number; onChange: (v: number) => void; icon: string
-}) {
+function Slider({ label, value, onChange, icon }: { label: string; value: number; onChange: (v: number) => void; icon: string }) {
     return (
         <label className="block">
             <div className="mb-2 font-medium flex items-center gap-2">
@@ -550,30 +561,42 @@ function Slider({ label, value, onChange, icon }: {
             </div>
             <div className="glass glass-hairline glass-noise rounded-xl p-3">
                 <input
-                    type="range" min={0} max={100} value={value}
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={value}
                     onChange={(e) => onChange(Number(e.target.value))}
                     className="w-full accent-amber-500"
-                    aria-valuemin={0} aria-valuemax={100} aria-valuenow={value} aria-label={label}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={value}
+                    aria-label={label}
                 />
             </div>
         </label>
     )
 }
 
-function Modal({ title, subtitle, onClose, children }: {
-    title: string; subtitle?: string; onClose: () => void; children: React.ReactNode
-}) {
+function Modal({ title, subtitle, onClose, children }: { title: string; subtitle?: string; onClose: () => void; children: React.ReactNode }) {
     return (
         <div
             className="fixed inset-0 z-[6000] grid place-items-center p-4"
-            role="dialog" aria-modal="true" aria-labelledby="modal-title"
-            onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            onClick={(e) => {
+                if (e.target === e.currentTarget) onClose()
+            }}
         >
             <div className="absolute inset-0 bg-black/20" />
             <div className="relative glass glass-hairline glass-noise rounded-3xl p-5 w-[min(620px,92vw)]">
                 <div className="flex items-start gap-2">
-                    <div className="text-lg font-semibold" id="modal-title">{title}</div>
-                    <button onClick={onClose} className="ml-auto rounded-lg px-2 py-1 hover:bg-white/40">✕</button>
+                    <div className="text-lg font-semibold" id="modal-title">
+                        {title}
+                    </div>
+                    <button onClick={onClose} className="ml-auto rounded-lg px-2 py-1 hover:bg-white/40">
+                        ✕
+                    </button>
                 </div>
                 {subtitle && <div className="text-sm italic opacity-70 mb-3">{subtitle}</div>}
                 <div>{children}</div>
@@ -588,10 +611,13 @@ function Meter({ value, min, max, label }: { value: number; min: number; max: nu
     return (
         <div>
             <div className="h-2 rounded-full bg-[rgba(64,38,19,.15)] relative overflow-hidden">
-                <div className="absolute inset-y-0 left-0" style={{
-                    width: `${pct}%`,
-                    background: 'linear-gradient(90deg,#60a5fa,#22c55e)'
-                }} />
+                <div
+                    className="absolute inset-y-0 left-0"
+                    style={{
+                        width: `${pct}%`,
+                        background: 'linear-gradient(90deg,#60a5fa,#22c55e)',
+                    }}
+                />
             </div>
             <div className="mt-1 text-xs opacity-70">{label ?? value.toFixed(1)}</div>
         </div>
@@ -599,9 +625,11 @@ function Meter({ value, min, max, label }: { value: number; min: number; max: nu
 }
 function Chip({ children }: { children: React.ReactNode }) {
     return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg
+        <span
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-lg
                      bg-[rgba(255,255,255,.55)] border border-[rgba(255,255,255,.4)]
-                     text-[#402613] text-xs">
+                     text-[#402613] text-xs"
+        >
       {children}
     </span>
     )
